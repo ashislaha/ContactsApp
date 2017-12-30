@@ -8,10 +8,10 @@
 
 import UIKit
 
+// add a NSCache for caching the images
+var cacheImages = NSCache<NSString, UIImage>()
+
 class ContactTableViewCell : UITableViewCell {
-    
-    // add a NSCache for caching the images
-    private let cacheImages = NSCache<NSString, UIImage>()
     
     // model
     public var model : Contact? {
@@ -28,7 +28,7 @@ class ContactTableViewCell : UITableViewCell {
         }
     }
     
-    // profile image and making it public to reuse the image info in Contact details page
+    // profile image and making it public to reuse the image info in Contact details 
     @IBOutlet public weak var profileImage: UIImageView! {
         didSet {
             profileImage.layer.cornerRadius = profileImage.frame.size.height/2
@@ -64,7 +64,7 @@ class ContactTableViewCell : UITableViewCell {
                 
                 DispatchQueue.main.async { [weak self] in
                     guard let image = UIImage(data: data) else { return }
-                    self?.cacheImages.setObject(image, forKey: NSString(string: urlString)) // setting into cache
+                    cacheImages.setObject(image, forKey: NSString(string: urlString)) // setting into cache
                     self?.profileImage.image = image
                 }
             }

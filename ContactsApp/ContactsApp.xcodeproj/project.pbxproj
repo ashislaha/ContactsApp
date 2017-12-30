@@ -19,6 +19,7 @@
 		805E213C1FF7A3AF00A0F702 /* ContactDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E213B1FF7A3AF00A0F702 /* ContactDetailsViewController.swift */; };
 		805E213E1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E213D1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift */; };
 		805E21401FF7C96400A0F702 /* ContactDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E213F1FF7C96400A0F702 /* ContactDetailCollectionViewCell.swift */; };
+		805E21441FF8014000A0F702 /* EditContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E21431FF8014000A0F702 /* EditContactViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		805E213B1FF7A3AF00A0F702 /* ContactDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailsViewController.swift; sourceTree = "<group>"; };
 		805E213D1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailTableViewCell.swift; sourceTree = "<group>"; };
 		805E213F1FF7C96400A0F702 /* ContactDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailCollectionViewCell.swift; sourceTree = "<group>"; };
+		805E21431FF8014000A0F702 /* EditContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditContactViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +94,7 @@
 			children = (
 				805E211F1FF768EB00A0F702 /* HomeScreenViewController.swift */,
 				805E213B1FF7A3AF00A0F702 /* ContactDetailsViewController.swift */,
+				805E21431FF8014000A0F702 /* EditContactViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -210,6 +213,7 @@
 				805E213C1FF7A3AF00A0F702 /* ContactDetailsViewController.swift in Sources */,
 				805E21361FF7760000A0F702 /* ContactHeaderView.swift in Sources */,
 				805E213E1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift in Sources */,
+				805E21441FF8014000A0F702 /* EditContactViewController.swift in Sources */,
 				805E21321FF76DC900A0F702 /* ContactTableViewCell.swift in Sources */,
 				805E21201FF768EB00A0F702 /* HomeScreenViewController.swift in Sources */,
 				805E211E1FF768EB00A0F702 /* AppDelegate.swift in Sources */,

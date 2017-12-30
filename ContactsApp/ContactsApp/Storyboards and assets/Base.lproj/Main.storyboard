@@ -238,6 +238,73 @@
             </objects>
             <point key="canvasLocation" x="1752.8" y="125.4872563718141"/>
         </scene>
+        <!--Edit Contact View Controller-->
+        <scene sceneID="3LQ-0y-OT8">
+            <objects>
+                <viewController storyboardIdentifier="EditContactViewController" id="dBW-Aj-CDU" customClass="EditContactViewController" customModule="ContactsApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="PSB-2P-wPv">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wZC-Vl-rPd">
+                                <rect key="frame" x="16" y="20" width="48" height="30"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" red="0.33725490200000002" green="0.87450980389999999" blue="0.76862745099999996" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancelTapped:" destination="dBW-Aj-CDU" eventType="touchUpInside" id="xv8-7a-b7K"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LeO-2i-OIG">
+                                <rect key="frame" x="322" y="20" width="37" height="30"/>
+                                <state key="normal" title="Done">
+                                    <color key="titleColor" red="0.33725490200000002" green="0.87450980389999999" blue="0.76862745099999996" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="doneTapped:" destination="dBW-Aj-CDU" eventType="touchUpInside" id="mYS-yQ-84x"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xYp-PR-Zsl">
+                                <rect key="frame" x="0.0" y="58" width="375" height="200"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cx1-3S-Tsi">
+                                        <rect key="frame" x="127" y="40" width="121" height="121"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="121" id="LQk-Aa-1gY"/>
+                                            <constraint firstAttribute="width" constant="121" id="p6d-ee-XDd"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.40667767770000002" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="cx1-3S-Tsi" firstAttribute="centerY" secondItem="xYp-PR-Zsl" secondAttribute="centerY" id="Fyd-nW-RrW"/>
+                                    <constraint firstItem="cx1-3S-Tsi" firstAttribute="centerX" secondItem="xYp-PR-Zsl" secondAttribute="centerX" id="v9E-78-Wr2"/>
+                                    <constraint firstAttribute="height" constant="200" id="zga-a8-70e"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="wZC-Vl-rPd" firstAttribute="leading" secondItem="ID3-c1-taD" secondAttribute="leading" constant="16" id="1qV-ha-c4h"/>
+                            <constraint firstItem="LeO-2i-OIG" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wZC-Vl-rPd" secondAttribute="trailing" constant="30" id="8nB-2b-qIO"/>
+                            <constraint firstItem="xYp-PR-Zsl" firstAttribute="top" secondItem="wZC-Vl-rPd" secondAttribute="bottom" constant="8" id="B93-Yu-HEo"/>
+                            <constraint firstItem="wZC-Vl-rPd" firstAttribute="top" secondItem="ID3-c1-taD" secondAttribute="top" id="IOP-WS-J43"/>
+                            <constraint firstItem="LeO-2i-OIG" firstAttribute="top" secondItem="ID3-c1-taD" secondAttribute="top" id="UcD-wJ-rUd"/>
+                            <constraint firstItem="xYp-PR-Zsl" firstAttribute="leading" secondItem="ID3-c1-taD" secondAttribute="leading" id="fqY-Gb-lk8"/>
+                            <constraint firstItem="ID3-c1-taD" firstAttribute="trailing" secondItem="LeO-2i-OIG" secondAttribute="trailing" constant="16" id="hzg-cl-msI"/>
+                            <constraint firstItem="ID3-c1-taD" firstAttribute="trailing" secondItem="xYp-PR-Zsl" secondAttribute="trailing" id="q01-yh-lCp"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ID3-c1-taD"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="cx1-3S-Tsi" id="aOD-bo-Jyy"/>
+                        <outlet property="topView" destination="xYp-PR-Zsl" id="MTk-M0-JPg"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Qsd-Hw-EUf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2578.4000000000001" y="125.4872563718141"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="yQS-5n-D8c">
             <objects>

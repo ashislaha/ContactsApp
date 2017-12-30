@@ -106,6 +106,11 @@ class ContactDetailsViewController: UIViewController {
     
     @objc func editTapped() {
         print("Edit button tapped")
+        
+        guard let editContactVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditContactViewController") as? EditContactViewController else { return }
+        
+        editContactVC.model = contactModel
+        present(editContactVC, animated: true, completion: nil)
     }
 }
 
