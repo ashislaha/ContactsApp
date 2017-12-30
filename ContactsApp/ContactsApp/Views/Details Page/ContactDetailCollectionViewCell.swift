@@ -17,6 +17,7 @@ class ContactDetailCollectionViewCell: UICollectionViewCell {
     
     var model : ContactDetailCollectionViewCellModel? {
         didSet {
+            
             if let desc = model?.cellType.rawValue {
                 label.text = desc
                 if desc == "favourite" {
@@ -29,12 +30,6 @@ class ContactDetailCollectionViewCell: UICollectionViewCell {
                     imageView.image = UIImage(named: desc)
                 }
             }
-        }
-    }
-    
-    var cellType : CellType? {
-        didSet {
-            
         }
     }
     

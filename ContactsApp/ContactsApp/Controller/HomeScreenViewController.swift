@@ -36,8 +36,22 @@ class HomeScreenViewController: UIViewController {
         super.viewWillAppear(animated)
         
         // reload the cell if coming from detail VC
-        if let selectedIndexPath = selectedIndexPath {
-            contactTableView.reloadRows(at: [selectedIndexPath], with: .fade)
+        relaodContactIfRequired()
+    }
+    
+    private func relaodContactIfRequired() {
+        if let selectedIndexPath = selectedIndexPath, let id = model[selectedIndexPath.row].id {
+            
+            // call a GET request only that contact
+            Parser.parseContacts(id: "\(id)", callback: { (contacts) in
+                
+                DispatchQueue.main.async { [weak self] in
+                    if let contact = contacts.first {
+                        self?.model[selectedIndexPath.row] = contact
+                        self?.contactTableView.reloadRows(at: [selectedIndexPath], with: .fade)
+                    }
+                }
+            })  
         }
     }
     

@@ -51,20 +51,37 @@ enum NetworkRequest : String {
 class Parser {
     
     // Get
-    class func parseContacts(callback : (([Contact])->())? ) {
+    class func parseContacts(id : String? = nil, callback : (([Contact])->())?) {
         
-        guard let url = URL(string: Constants.contactEndPoint) else { return }
+        var urlStr : String = ""
+        if let id = id {
+            urlStr = Constants.putEndPoint + "\(id).json"
+        } else {
+            urlStr = Constants.contactEndPoint
+        }
+        
+        guard let url = URL(string: urlStr) else { return }
         let session = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
             guard let data = data else { return }
-            guard let contactArray = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [[String : Any]] else { return }
             
-            var contacts : [Contact] = []
-            contactArray?.forEach { (dict) in
-                contacts.append(Contact(dict: dict))
+            if let _ = id { // getting one contact
+                
+                guard let contactDict = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String : Any] else { return }
+                if let contactDict = contactDict {
+                     callback?([Contact(dict: contactDict)])
+                }
+            
+            } else { // all contact
+                
+                guard let contactArray = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [[String : Any]] else { return }
+                
+                var contacts : [Contact] = []
+                contactArray?.forEach { (dict) in
+                    contacts.append(Contact(dict: dict))
+                }
+                callback?(contacts)
             }
-            print(contacts)
-            callback?(contacts)
         }
         session.resume()
     }
