@@ -8,20 +8,28 @@
 
 /* Begin PBXBuildFile section */
 		805E211E1FF768EB00A0F702 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E211D1FF768EB00A0F702 /* AppDelegate.swift */; };
-		805E21201FF768EB00A0F702 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E211F1FF768EB00A0F702 /* ViewController.swift */; };
+		805E21201FF768EB00A0F702 /* HomeScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E211F1FF768EB00A0F702 /* HomeScreenViewController.swift */; };
 		805E21231FF768EB00A0F702 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 805E21211FF768EB00A0F702 /* Main.storyboard */; };
 		805E21251FF768EB00A0F702 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 805E21241FF768EB00A0F702 /* Assets.xcassets */; };
 		805E21281FF768EB00A0F702 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 805E21261FF768EB00A0F702 /* LaunchScreen.storyboard */; };
+		805E21301FF76C3000A0F702 /* Contants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E212F1FF76C3000A0F702 /* Contants.swift */; };
+		805E21321FF76DC900A0F702 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E21311FF76DC900A0F702 /* ContactTableViewCell.swift */; };
+		805E21341FF76E2300A0F702 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E21331FF76E2300A0F702 /* Model.swift */; };
+		805E21361FF7760000A0F702 /* ContactHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E21351FF7760000A0F702 /* ContactHeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		805E211A1FF768EB00A0F702 /* ContactsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		805E211D1FF768EB00A0F702 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		805E211F1FF768EB00A0F702 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		805E211F1FF768EB00A0F702 /* HomeScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreenViewController.swift; sourceTree = "<group>"; };
 		805E21221FF768EB00A0F702 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		805E21241FF768EB00A0F702 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		805E21271FF768EB00A0F702 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		805E21291FF768EB00A0F702 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		805E212F1FF76C3000A0F702 /* Contants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contants.swift; sourceTree = "<group>"; };
+		805E21311FF76DC900A0F702 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
+		805E21331FF76E2300A0F702 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		805E21351FF7760000A0F702 /* ContactHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactHeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,13 +63,49 @@
 			isa = PBXGroup;
 			children = (
 				805E211D1FF768EB00A0F702 /* AppDelegate.swift */,
-				805E211F1FF768EB00A0F702 /* ViewController.swift */,
-				805E21211FF768EB00A0F702 /* Main.storyboard */,
-				805E21241FF768EB00A0F702 /* Assets.xcassets */,
-				805E21261FF768EB00A0F702 /* LaunchScreen.storyboard */,
+				805E21371FF7777F00A0F702 /* Model */,
+				805E21381FF7778900A0F702 /* Controller */,
+				805E21391FF777A000A0F702 /* Views */,
+				805E213A1FF777AD00A0F702 /* Storyboards and assets */,
 				805E21291FF768EB00A0F702 /* Info.plist */,
 			);
 			path = ContactsApp;
+			sourceTree = "<group>";
+		};
+		805E21371FF7777F00A0F702 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				805E21331FF76E2300A0F702 /* Model.swift */,
+				805E212F1FF76C3000A0F702 /* Contants.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		805E21381FF7778900A0F702 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				805E211F1FF768EB00A0F702 /* HomeScreenViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		805E21391FF777A000A0F702 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				805E21351FF7760000A0F702 /* ContactHeaderView.swift */,
+				805E21311FF76DC900A0F702 /* ContactTableViewCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		805E213A1FF777AD00A0F702 /* Storyboards and assets */ = {
+			isa = PBXGroup;
+			children = (
+				805E21211FF768EB00A0F702 /* Main.storyboard */,
+				805E21241FF768EB00A0F702 /* Assets.xcassets */,
+				805E21261FF768EB00A0F702 /* LaunchScreen.storyboard */,
+			);
+			path = "Storyboards and assets";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -136,8 +180,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				805E21201FF768EB00A0F702 /* ViewController.swift in Sources */,
+				805E21341FF76E2300A0F702 /* Model.swift in Sources */,
+				805E21361FF7760000A0F702 /* ContactHeaderView.swift in Sources */,
+				805E21321FF76DC900A0F702 /* ContactTableViewCell.swift in Sources */,
+				805E21201FF768EB00A0F702 /* HomeScreenViewController.swift in Sources */,
 				805E211E1FF768EB00A0F702 /* AppDelegate.swift in Sources */,
+				805E21301FF76C3000A0F702 /* Contants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

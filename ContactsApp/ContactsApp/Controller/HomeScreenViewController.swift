@@ -1,0 +1,83 @@
+//
+//  ViewController.swift
+//  ContactsApp
+//
+//  Created by Ashis Laha on 30/12/17.
+//  Copyright © 2017 Ashis Laha. All rights reserved.
+//
+
+import UIKit
+
+class HomeScreenViewController: UIViewController {
+
+    var model : [Contact] = []
+    
+    //MARK: Outlets
+    @IBOutlet private weak var contactTableView: UITableView! {
+        didSet {
+            contactTableView.delegate = self
+            contactTableView.dataSource = self
+        }
+    }
+    
+    //MARK: View Controller life cycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        registers()
+        tableViewSetup()
+    }
+    
+    private func registers() {
+        contactTableView.register(ContactHeaderView.self, forHeaderFooterViewReuseIdentifier: Constants.headerID)
+    }
+    
+    private func tableViewSetup() {
+        // resize based on content
+        contactTableView.rowHeight = UITableViewAutomaticDimension
+        contactTableView.estimatedRowHeight = 100
+        
+        contactTableView.reloadData()
+        contactTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        contactTableView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+}
+
+//MARK: UITableViewDataSource
+extension HomeScreenViewController : UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 4
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.contactCellId, for: indexPath) as? ContactTableViewCell else { return UITableViewCell() }
+        
+        //cell.model = model[indexPath.row]
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Constants.headerID) as? ContactHeaderView else { return nil }
+        header.viewSetup()
+        return header
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 32
+    }
+}
+
+//MARK: UITableViewDelegate
+extension HomeScreenViewController : UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("cell \(indexPath) tapped")
+    }
+}
+
+
