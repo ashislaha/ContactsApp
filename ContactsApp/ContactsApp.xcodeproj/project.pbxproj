@@ -75,8 +75,8 @@
 		805E21371FF7777F00A0F702 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				805E21331FF76E2300A0F702 /* Model.swift */,
 				805E212F1FF76C3000A0F702 /* Contants.swift */,
+				805E21331FF76E2300A0F702 /* Model.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";

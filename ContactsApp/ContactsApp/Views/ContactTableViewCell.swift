@@ -16,9 +16,13 @@ class ContactTableViewCell : UITableViewCell {
     // model
     public var model : Contact? {
         didSet {
-            loaadImage(urlString: model?.profileImageUrl ?? "")
-            name.text = model?.name ?? ""
-            if let isFavourite = model?.isFavourite {
+            loaadImage(urlString: model?.profile_pic ?? "")
+            
+            let firstName = model?.first_name ?? ""
+            let lastName = model?.last_name ?? ""
+            name.text = firstName + " " + lastName
+            
+            if let isFavourite = model?.favorite {
                 favouriteImageView.isHidden = !isFavourite
             }
         }
@@ -57,6 +61,7 @@ class ContactTableViewCell : UITableViewCell {
         } else {
             let session = URLSession.shared.dataTask(with: url) { (data, response, error) in
                 guard let data = data , error == nil else { return }
+                
                 DispatchQueue.main.async { [weak self] in
                     guard let image = UIImage(data: data) else { return }
                     self?.cacheImages.setObject(image, forKey: NSString(string: urlString)) // setting into cache
@@ -79,7 +84,6 @@ class ContactTableViewCell : UITableViewCell {
     
     private func viewSetup() {
         // can do other set up here if you want.
-        backgroundColor = .yellow
     }
 }
 

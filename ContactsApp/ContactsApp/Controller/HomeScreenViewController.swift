@@ -27,6 +27,8 @@ class HomeScreenViewController: UIViewController {
         title = "Contacts"
         registers()
         tableViewSetup()
+        getContacts()
+        
     }
     
     private func registers() {
@@ -41,6 +43,17 @@ class HomeScreenViewController: UIViewController {
         contactTableView.reloadData()
         contactTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         contactTableView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+    
+    private func getContacts() {
+        Parser.parseContacts { [weak self] (contacts) in
+            
+            // UI update on main thread
+            DispatchQueue.main.async {
+                self?.model = contacts
+                self?.contactTableView.reloadData()
+            }
+        }
     }
     
     //MARK: IBActions
@@ -62,13 +75,13 @@ extension HomeScreenViewController : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return model.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.contactCellId, for: indexPath) as? ContactTableViewCell else { return UITableViewCell() }
         
-        //cell.model = model[indexPath.row]
+        cell.model = model[indexPath.row]
         return cell
     }
     
@@ -87,7 +100,7 @@ extension HomeScreenViewController : UITableViewDataSource {
 extension HomeScreenViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("cell \(indexPath) tapped")
+        print("\(model[indexPath.row])")
     }
 }
 
