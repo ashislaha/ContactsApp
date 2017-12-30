@@ -16,9 +16,10 @@ struct DetailsTableViewCellModel {
 class ContactDetailsViewController: UIViewController {
 
     public var contactModel : Contact?
+    public var importImage : UIImage?
     
     private var detailCellModel : [DetailsTableViewCellModel] = []
-    private var collectionCellModel : [CellType] = [ .message, .call, .email, .favourite]
+    private var collectionCellModel : [ContactDetailCollectionViewCellModel] = []
     
     // topview
     @IBOutlet weak var topView: UIView!
@@ -52,6 +53,7 @@ class ContactDetailsViewController: UIViewController {
             tableView.dataSource = self
             tableView.delegate = self
             tableView.isScrollEnabled = false
+            tableView.isUserInteractionEnabled = false
         }
     }
     
@@ -64,15 +66,10 @@ class ContactDetailsViewController: UIViewController {
     // update UI 
     private func updateUI() {
         updateDetailsCellModel()
+        updateDetailsCollectionCellModel()
         addEditButton()
         updateName()
         updateImage()
-    }
-    
-    private func updateName() {
-        let firstName = contactModel?.first_name ?? ""
-        let lastName = contactModel?.last_name ?? ""
-        name.text = firstName + " " + lastName
     }
     
     private  func updateDetailsCellModel(){
@@ -81,23 +78,24 @@ class ContactDetailsViewController: UIViewController {
         tableView.reloadData()
     }
     
-    private func updateImage() {
-        if let imageUrl = contactModel?.profile_pic {
-            loadImage(urlString: imageUrl)
-        }
+    private func updateDetailsCollectionCellModel() {
+        collectionCellModel.append(ContactDetailCollectionViewCellModel(cellType: .message, isFavourite: false))
+        collectionCellModel.append(ContactDetailCollectionViewCellModel(cellType: .call, isFavourite: false))
+        collectionCellModel.append(ContactDetailCollectionViewCellModel(cellType: .email, isFavourite: false))
+        collectionCellModel.append(ContactDetailCollectionViewCellModel(cellType: .favourite, isFavourite: contactModel?.favorite ?? false))
+        collectionView.reloadData()
     }
     
-    private func loadImage(urlString : String)  {
-        guard let url = URL(string: urlString) else { return }
-        let session = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            guard let data = data, error == nil else { return }
-            
-            DispatchQueue.main.async { [weak self] in
-                guard let image = UIImage(data: data) else { return }
-                self?.profileImageView.image = image
-            }
+    private func updateName() {
+        let firstName = contactModel?.first_name ?? ""
+        let lastName = contactModel?.last_name ?? ""
+        name.text = firstName + " " + lastName
+    }
+    
+    private func updateImage() {
+        if let image = importImage {
+           profileImageView.image = image
         }
-        session.resume()
     }
     
     private func addEditButton() {
@@ -132,7 +130,6 @@ extension ContactDetailsViewController : UITableViewDataSource {
 //MARK: UITableViewDelegate
 extension ContactDetailsViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("cell tapped")
     }
 }
 
@@ -150,7 +147,7 @@ extension ContactDetailsViewController : UICollectionViewDataSource {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.collectionViewCell, for: indexPath) as? ContactDetailCollectionViewCell else { return UICollectionViewCell() }
         
-        cell.cellType = collectionCellModel[indexPath.row]
+        cell.model = collectionCellModel[indexPath.row]
         return cell
     }
 }
@@ -159,7 +156,30 @@ extension ContactDetailsViewController : UICollectionViewDataSource {
 extension ContactDetailsViewController : UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("tapped : \(indexPath)")
+        let cellType = collectionCellModel[indexPath.row].cellType
+        switch cellType {
+        case .message:
+            print("Message tapped")
+            
+        case .call:
+            print("call tapped")
+            
+        case .email:
+            print("email tapped")
+            
+        case .favourite:
+            print("favourite tapped")
+            
+            guard let isFavourite = contactModel?.favorite else { return }
+            contactModel?.favorite = !isFavourite // update contact model
+            collectionCellModel[3].isFavourite = !isFavourite // update collection view cell model
+            collectionView.reloadItems(at: [indexPath])
+            
+            // do a PUT call to update the favourite
+            if let contactModel = contactModel {
+                Parser.postContact(contact:contactModel, requestType: .put)
+            }
+        }
     }
 }
 

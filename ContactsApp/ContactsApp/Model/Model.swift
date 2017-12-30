@@ -39,10 +39,18 @@ enum CellType : String {
     case favourite = "favourite"
 }
 
+// data request type
+enum NetworkRequest : String {
+    case get = "get"
+    case post = "post"
+    case put = "put"
+    case delete = "delete"
+}
 
 // Data Parser
 class Parser {
     
+    // Get
     class func parseContacts(callback : (([Contact])->())? ) {
         
         guard let url = URL(string: Constants.contactEndPoint) else { return }
@@ -61,14 +69,82 @@ class Parser {
         session.resume()
     }
     
-    class func postContact(contact : Contact) {
+    // Put or Post
+    class func postContact(contact : Contact, requestType : NetworkRequest) {
         
-        guard let urlString = contact.url, let url = URL(string: urlString) else { return }
-        let urlRequest = URLRequest(url: url)
-        let data = Data()
+        // update url based on "put" or "post"
+        
+        var urlString : String = ""
+        if requestType == .put || requestType == .delete  { // put OR delete
+            if let urlStr = contact.url {
+                urlString = urlStr
+            } else if let id = contact.id {
+                urlString = Constants.putEndPoint + "\(id).json"
+            }
+        } else if requestType == .post { // post
+            urlString = Constants.contactEndPoint
+        }
+        
+        // validation
+        guard let url = URL(string: urlString), !urlString.isEmpty else { return }
+        
+        // request
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = requestType.rawValue
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        // body
+        let dict = requestType == .delete ? [:] : getDictionary(contact: contact)
+        
+        guard let data = getJsonDataFromDictionary(jsonDict: dict) else { return }
         
         let session = URLSession.shared.uploadTask(with: urlRequest, from: data) { (data, response, error) in
             
+            if error == nil {
+                if requestType == .post {
+                    print("Successfully done POST request")
+                } else if requestType == .put {
+                    print("Successfully done PUT request")
+                } else if requestType == .delete {
+                     print("Successfully DELETED")
+                }
+            }
         }
+        session.resume()
+    }
+    
+    private class func getDictionary(contact : Contact) -> [String : Any] {
+        var dict : [String : Any] = [:]
+        
+        if let id = contact.id {
+            dict["id"] = "\(id)"
+        }
+        if let firstName = contact.first_name {
+            dict["first_name"] = firstName
+        }
+        if let lastName = contact.last_name {
+            dict["last_name"] = lastName
+        }
+        if let picture = contact.profile_pic {
+            dict["profile_pic"] = picture
+        }
+        if let email = contact.email {
+            dict["email"] = email
+        }
+        if let phoneNumber = contact.phone_number {
+            dict["phone_number"] = phoneNumber
+        }
+        if let favourite = contact.favorite {
+            dict["favorite"] = favourite
+        }
+        return dict
+    }
+    
+    private class func getJsonDataFromDictionary(jsonDict httpBody: [String: Any]?) -> Data? {
+        var bodyData: Data? = nil
+        if let httpBody = httpBody {
+            bodyData = try? JSONSerialization.data(withJSONObject: httpBody, options: .prettyPrinted)
+        }
+        return bodyData
     }
 }

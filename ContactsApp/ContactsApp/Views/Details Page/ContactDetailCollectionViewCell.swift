@@ -8,14 +8,33 @@
 
 import UIKit
 
+struct ContactDetailCollectionViewCellModel {
+    let cellType : CellType
+    var isFavourite : Bool
+}
+
 class ContactDetailCollectionViewCell: UICollectionViewCell {
+    
+    var model : ContactDetailCollectionViewCellModel? {
+        didSet {
+            if let desc = model?.cellType.rawValue {
+                label.text = desc
+                if desc == "favourite" {
+                    if let isFavourite = model?.isFavourite, isFavourite {
+                        imageView.image = UIImage(named: "star")
+                    } else {
+                        imageView.image = UIImage(named: "favourite")
+                    }
+                } else {
+                    imageView.image = UIImage(named: desc)
+                }
+            }
+        }
+    }
     
     var cellType : CellType? {
         didSet {
-            if let desc = cellType?.rawValue {
-                label.text = desc
-                imageView.image = UIImage(named: desc)
-            }
+            
         }
     }
     

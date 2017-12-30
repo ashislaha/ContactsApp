@@ -11,6 +11,7 @@ import UIKit
 class HomeScreenViewController: UIViewController {
 
     var model : [Contact] = []
+    private var selectedIndexPath : IndexPath? // store while visiting the details page
     
     //MARK: Outlets
     @IBOutlet private weak var contactTableView: UITableView! {
@@ -29,7 +30,15 @@ class HomeScreenViewController: UIViewController {
         registers()
         tableViewSetup()
         getContacts()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
+        // reload the cell if coming from detail VC
+        if let selectedIndexPath = selectedIndexPath {
+            contactTableView.reloadRows(at: [selectedIndexPath], with: .fade)
+        }
     }
     
     private func registers() {
@@ -106,7 +115,12 @@ extension HomeScreenViewController : UITableViewDelegate {
         print("\(model[indexPath.row])")
         
         guard let detailVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContactDetailsViewController") as? ContactDetailsViewController else { return }
+        
+        selectedIndexPath = indexPath
         detailVC.contactModel = model[indexPath.row]
+        if let cell = tableView.cellForRow(at: indexPath) as? ContactTableViewCell {
+            detailVC.importImage = cell.profileImage.image  // using the downloaded image, save some data..
+        }
         navigationController?.pushViewController(detailVC, animated: true)
     }
 }

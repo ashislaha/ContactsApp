@@ -11,7 +11,7 @@ import UIKit
 class ContactTableViewCell : UITableViewCell {
     
     // add a NSCache for caching the images
-    let cacheImages = NSCache<NSString, UIImage>()
+    private let cacheImages = NSCache<NSString, UIImage>()
     
     // model
     public var model : Contact? {
@@ -28,8 +28,8 @@ class ContactTableViewCell : UITableViewCell {
         }
     }
     
-    // profile image
-    @IBOutlet private weak var profileImage: UIImageView! {
+    // profile image and making it public to reuse the image info in Contact details page
+    @IBOutlet public weak var profileImage: UIImageView! {
         didSet {
             profileImage.layer.cornerRadius = profileImage.frame.size.height/2
             profileImage.clipsToBounds = true
