@@ -1,0 +1,71 @@
+//
+//  ContactDetailCollectionViewCell.swift
+//  ContactsApp
+//
+//  Created by Ashis Laha on 30/12/17.
+//  Copyright © 2017 Ashis Laha. All rights reserved.
+//
+
+import UIKit
+
+class ContactDetailCollectionViewCell: UICollectionViewCell {
+    
+    var cellType : CellType? {
+        didSet {
+            if let desc = cellType?.rawValue {
+                label.text = desc
+                imageView.image = UIImage(named: desc)
+            }
+        }
+    }
+    
+    private let imageView : UIImageView = { // closure
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false // enable autolayout
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }() // () is used to execute the closure
+    
+    private let label : UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = .gray
+        return label
+    }()
+    
+    //MARK:- Layout Setup
+    private func layoutSetup() {
+        
+        NSLayoutConstraint.activate([
+            // image layout
+            imageView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -10), // shift a bit up from centerX
+            imageView.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0),
+            imageView.heightAnchor.constraint(equalToConstant: 50),
+            imageView.widthAnchor.constraint(equalToConstant: 50),
+            
+            //label layout
+            label.leadingAnchor.constraint(equalTo: leadingAnchor),
+            label.bottomAnchor.constraint(equalTo: bottomAnchor),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor),
+            label.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8)
+        ])
+    }
+    
+    private func viewSetup() {
+        addSubview(imageView)
+        addSubview(label)
+        layoutSetup()
+    }
+    
+    // view loading
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        viewSetup()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}

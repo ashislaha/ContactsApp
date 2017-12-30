@@ -8,6 +8,7 @@
 
 import Foundation
 
+// Contact
 struct Contact {
     var id : Int?
     var profile_pic : String?
@@ -30,6 +31,16 @@ struct Contact {
     }
 }
 
+// colletion view Cell type in contact details page
+enum CellType : String {
+    case message = "message"
+    case call = "call"
+    case email = "email"
+    case favourite = "favourite"
+}
+
+
+// Data Parser
 class Parser {
     
     class func parseContacts(callback : (([Contact])->())? ) {

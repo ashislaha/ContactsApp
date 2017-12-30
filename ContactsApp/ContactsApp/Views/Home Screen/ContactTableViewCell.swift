@@ -16,7 +16,7 @@ class ContactTableViewCell : UITableViewCell {
     // model
     public var model : Contact? {
         didSet {
-            loaadImage(urlString: model?.profile_pic ?? "")
+            loadImage(urlString: model?.profile_pic ?? "")
             
             let firstName = model?.first_name ?? ""
             let lastName = model?.last_name ?? ""
@@ -52,7 +52,7 @@ class ContactTableViewCell : UITableViewCell {
     // favourite Image
     @IBOutlet private weak var favouriteImageView: UIImageView!
     
-    private func loaadImage(urlString : String) {
+    private func loadImage(urlString : String) {
         guard let url = URL(string: urlString), urlString != "" else { return }
         // check whether the image is present into cache or not
         if let image = cacheImages.object(forKey: NSString(string: urlString)) {

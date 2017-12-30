@@ -19,6 +19,7 @@ class HomeScreenViewController: UIViewController {
             contactTableView.dataSource = self
         }
     }
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     //MARK: View Controller life cycle
     override func viewDidLoad() {
@@ -46,12 +47,14 @@ class HomeScreenViewController: UIViewController {
     }
     
     private func getContacts() {
+        
+        spinner.startAnimating()
         Parser.parseContacts { [weak self] (contacts) in
-            
             // UI update on main thread
             DispatchQueue.main.async {
                 self?.model = contacts
                 self?.contactTableView.reloadData()
+                self?.spinner.stopAnimating()
             }
         }
     }

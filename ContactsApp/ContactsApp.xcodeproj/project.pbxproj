@@ -18,6 +18,7 @@
 		805E21361FF7760000A0F702 /* ContactHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E21351FF7760000A0F702 /* ContactHeaderView.swift */; };
 		805E213C1FF7A3AF00A0F702 /* ContactDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E213B1FF7A3AF00A0F702 /* ContactDetailsViewController.swift */; };
 		805E213E1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E213D1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift */; };
+		805E21401FF7C96400A0F702 /* ContactDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E213F1FF7C96400A0F702 /* ContactDetailCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		805E21351FF7760000A0F702 /* ContactHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactHeaderView.swift; sourceTree = "<group>"; };
 		805E213B1FF7A3AF00A0F702 /* ContactDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailsViewController.swift; sourceTree = "<group>"; };
 		805E213D1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailTableViewCell.swift; sourceTree = "<group>"; };
+		805E213F1FF7C96400A0F702 /* ContactDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,9 +99,8 @@
 		805E21391FF777A000A0F702 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				805E21351FF7760000A0F702 /* ContactHeaderView.swift */,
-				805E21311FF76DC900A0F702 /* ContactTableViewCell.swift */,
-				805E213D1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift */,
+				805E21411FF7CB7900A0F702 /* Home Screen */,
+				805E21421FF7CB8A00A0F702 /* Details Page */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -112,6 +113,24 @@
 				805E21261FF768EB00A0F702 /* LaunchScreen.storyboard */,
 			);
 			path = "Storyboards and assets";
+			sourceTree = "<group>";
+		};
+		805E21411FF7CB7900A0F702 /* Home Screen */ = {
+			isa = PBXGroup;
+			children = (
+				805E21351FF7760000A0F702 /* ContactHeaderView.swift */,
+				805E21311FF76DC900A0F702 /* ContactTableViewCell.swift */,
+			);
+			path = "Home Screen";
+			sourceTree = "<group>";
+		};
+		805E21421FF7CB8A00A0F702 /* Details Page */ = {
+			isa = PBXGroup;
+			children = (
+				805E213D1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift */,
+				805E213F1FF7C96400A0F702 /* ContactDetailCollectionViewCell.swift */,
+			);
+			path = "Details Page";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -187,6 +206,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				805E21341FF76E2300A0F702 /* Model.swift in Sources */,
+				805E21401FF7C96400A0F702 /* ContactDetailCollectionViewCell.swift in Sources */,
 				805E213C1FF7A3AF00A0F702 /* ContactDetailsViewController.swift in Sources */,
 				805E21361FF7760000A0F702 /* ContactHeaderView.swift in Sources */,
 				805E213E1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift in Sources */,
