@@ -13,6 +13,8 @@ struct Constants {
     
     static let contactCellId = "contactCell"
     static let headerID = "headerID"
+    static let detailCell = "detailCell"
+    static let editCell = "editCell"
     
     static let greenyColor = UIColor(red: 86/255.0, green: 223/255.0, blue: 196/255.0, alpha: 1.0)
     

@@ -52,12 +52,12 @@ class Parser {
     
     class func postContact(contact : Contact) {
         
-//        guard let urlString = contact.url, let url = URL(string: urlString) else { return }
-//        let urlRequest = URLRequest(url: url)
-//        let data = Data()
-//        
-//        let session = URLSession.shared.uploadTask(with: urlRequest, from: data) { (data, response, error) in
-//            
-//        }
+        guard let urlString = contact.url, let url = URL(string: urlString) else { return }
+        let urlRequest = URLRequest(url: url)
+        let data = Data()
+        
+        let session = URLSession.shared.uploadTask(with: urlRequest, from: data) { (data, response, error) in
+            
+        }
     }
 }

@@ -101,6 +101,10 @@ extension HomeScreenViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("\(model[indexPath.row])")
+        
+        guard let detailVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContactDetailsViewController") as? ContactDetailsViewController else { return }
+        detailVC.contactModel = model[indexPath.row]
+        navigationController?.pushViewController(detailVC, animated: true)
     }
 }
 

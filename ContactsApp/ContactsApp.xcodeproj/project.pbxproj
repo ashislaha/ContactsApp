@@ -16,6 +16,8 @@
 		805E21321FF76DC900A0F702 /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E21311FF76DC900A0F702 /* ContactTableViewCell.swift */; };
 		805E21341FF76E2300A0F702 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E21331FF76E2300A0F702 /* Model.swift */; };
 		805E21361FF7760000A0F702 /* ContactHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E21351FF7760000A0F702 /* ContactHeaderView.swift */; };
+		805E213C1FF7A3AF00A0F702 /* ContactDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E213B1FF7A3AF00A0F702 /* ContactDetailsViewController.swift */; };
+		805E213E1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E213D1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		805E21311FF76DC900A0F702 /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		805E21331FF76E2300A0F702 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		805E21351FF7760000A0F702 /* ContactHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactHeaderView.swift; sourceTree = "<group>"; };
+		805E213B1FF7A3AF00A0F702 /* ContactDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailsViewController.swift; sourceTree = "<group>"; };
+		805E213D1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				805E211F1FF768EB00A0F702 /* HomeScreenViewController.swift */,
+				805E213B1FF7A3AF00A0F702 /* ContactDetailsViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -94,6 +99,7 @@
 			children = (
 				805E21351FF7760000A0F702 /* ContactHeaderView.swift */,
 				805E21311FF76DC900A0F702 /* ContactTableViewCell.swift */,
+				805E213D1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -181,7 +187,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				805E21341FF76E2300A0F702 /* Model.swift in Sources */,
+				805E213C1FF7A3AF00A0F702 /* ContactDetailsViewController.swift in Sources */,
 				805E21361FF7760000A0F702 /* ContactHeaderView.swift in Sources */,
+				805E213E1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift in Sources */,
 				805E21321FF76DC900A0F702 /* ContactTableViewCell.swift in Sources */,
 				805E21201FF768EB00A0F702 /* HomeScreenViewController.swift in Sources */,
 				805E211E1FF768EB00A0F702 /* AppDelegate.swift in Sources */,
