@@ -81,7 +81,20 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" id="JRr-q4-oQ2"/>
+                    <navigationItem key="navigationItem" id="JRr-q4-oQ2">
+                        <barButtonItem key="leftBarButtonItem" title="Groups" id="TFx-4d-ytX">
+                            <color key="tintColor" red="0.33725490196078434" green="0.87450980392156863" blue="0.76862745098039209" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="groupsTapped:" destination="BYZ-38-t0r" id="1Ih-De-BvB"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="nwV-qv-oYK">
+                            <color key="tintColor" red="0.33725490200000002" green="0.87450980389999999" blue="0.76862745099999996" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="addTapped:" destination="BYZ-38-t0r" id="DsY-Lc-ydV"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="contactTableView" destination="nBQ-Vl-teF" id="d51-xK-RUX"/>
                     </connections>

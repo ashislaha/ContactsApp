@@ -24,6 +24,7 @@ class HomeScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "Contacts"
         registers()
         tableViewSetup()
     }
@@ -40,6 +41,16 @@ class HomeScreenViewController: UIViewController {
         contactTableView.reloadData()
         contactTableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         contactTableView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+    
+    //MARK: IBActions
+    @IBAction func groupsTapped(_ sender: UIBarButtonItem) {
+        print("group tapped")
+    }
+    
+    @IBAction func addTapped(_ sender: UIBarButtonItem) {
+        print("add tapped")
+        
     }
 }
 
