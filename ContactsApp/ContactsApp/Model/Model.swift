@@ -20,18 +20,20 @@ struct Contact {
     var updated_at : String?
     var favorite : Bool?
     var url : String?
+    var image : Data?  // used for inside app only while data-flow happens
     
     init(dict : [String : Any]) {
-        id = dict["id"] as? Int
-        profile_pic = dict["profile_pic"] as? String
-        first_name = dict["first_name"] as? String
-        last_name = dict["last_name"] as? String
-        favorite = dict["favorite"] as? Bool
-        url = dict["url"] as? String
-        phone_number = dict["phone_number"] as? String
-        email = dict["email"] as? String
-        created_at = dict["created_at"] as? String
-        updated_at = dict["updated_at"] as? String
+        id = dict[Constants.id] as? Int
+        profile_pic = dict[Constants.profilePic] as? String
+        first_name = dict[Constants.firstName] as? String
+        last_name = dict[Constants.lastName] as? String
+        favorite = dict[Constants.favorite] as? Bool
+        url = dict[Constants.url] as? String
+        phone_number = dict[Constants.phoneNumber] as? String
+        email = dict[Constants.email] as? String
+        created_at = dict[Constants.createdAt] as? String
+        updated_at = dict[Constants.updatedAt] as? String
+        image = dict[Constants.imageData] as? Data
     }
 }
 
@@ -45,10 +47,10 @@ enum CellType : String {
 
 // data request type
 enum NetworkRequest : String {
-    case GET = "get"
-    case POST = "post"
-    case PUT = "put"
-    case DELETE = "delete"
+    case GET = "GET"
+    case POST = "POST"
+    case PUT = "PUT"
+    case DELETE = "DELETE"
 }
 
 // Data Parser
@@ -64,6 +66,7 @@ class Parser {
             urlStr = Constants.contactEndPoint
         }
         
+        print("\nGET URL : \(urlStr)")
         guard let url = URL(string: urlStr) else { return }
         let session = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
@@ -73,7 +76,8 @@ class Parser {
                 
                 guard let contactDict = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String : Any] else { return }
                 if let contactDict = contactDict {
-                     callback?([Contact(dict: contactDict)])
+                    print("Successfully GET single contact")
+                    callback?([Contact(dict: contactDict)])
                 }
             
             } else { // all contact
@@ -84,6 +88,7 @@ class Parser {
                 contactArray?.forEach { (dict) in
                     contacts.append(Contact(dict: dict))
                 }
+                print("Successfully GET contacts list")
                 callback?(contacts)
             }
         }
@@ -91,7 +96,7 @@ class Parser {
     }
     
     // PUT / POST / DELETE
-    class func updateContact(contact : Contact, requestType : NetworkRequest) {
+    class func updateContact(contact : Contact, requestType : NetworkRequest, completionHandler : (()->())? = nil) {
         
         // update url based on "put" or "post"
         var urlString : String = ""
@@ -105,6 +110,7 @@ class Parser {
             urlString = Constants.contactEndPoint
         }
         
+        print("\n\(requestType.rawValue) URL : \(urlString)")
         // validation
         guard let url = URL(string: urlString), !urlString.isEmpty else { return }
         
@@ -121,7 +127,13 @@ class Parser {
         // session
         let session = URLSession.shared.uploadTask(with: urlRequest, from: data) { (data, response, error) in
             
-            if error == nil {
+            if let data = data, error == nil {
+                
+                let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
+                if let responseJSON = responseJSON as? [String: Any] {
+                    print("\n Response Dictionary :",responseJSON)
+                }
+                
                 if requestType == .POST {
                     print("Successfully done POST request")
                 } else if requestType == .PUT {
@@ -129,6 +141,7 @@ class Parser {
                 } else if requestType == .DELETE {
                      print("Successfully DELETED")
                 }
+                completionHandler?()
             }
         }
         session.resume()
@@ -137,26 +150,29 @@ class Parser {
     private class func getDictionary(contact : Contact) -> [String : Any] {
         var dict : [String : Any] = [:]
         
-        if let id = contact.id {
-            dict["id"] = "\(id)"
-        }
         if let firstName = contact.first_name {
-            dict["first_name"] = firstName
+            dict[Constants.firstName] = firstName
         }
         if let lastName = contact.last_name {
-            dict["last_name"] = lastName
+            dict[Constants.lastName] = lastName
         }
         if let picture = contact.profile_pic {
-            dict["profile_pic"] = picture
+            dict[Constants.profilePic] = picture
         }
         if let email = contact.email {
-            dict["email"] = email
+            dict[Constants.email] = email
         }
         if let phoneNumber = contact.phone_number {
-            dict["phone_number"] = phoneNumber
+            dict[Constants.phoneNumber] = phoneNumber
         }
         if let favourite = contact.favorite {
-            dict["favorite"] = favourite
+            dict[Constants.favorite] = favourite
+        }
+        if let createdAt = contact.created_at {
+            dict[Constants.createdAt] = createdAt
+        }
+        if let updateAt = contact.updated_at {
+            dict[Constants.updatedAt] = updateAt
         }
         return dict
     }

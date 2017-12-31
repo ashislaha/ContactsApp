@@ -8,11 +8,16 @@
 
 import UIKit
 
+protocol SaveRecordProtocol : class {
+    func save(model : Contact)
+}
+
+
 class EditContactViewController: UIViewController {
 
     public var model : Contact?
-    public var importedImage : UIImage?
     private var detailCellModel : [DetailsTableViewCellModel] = []
+    public weak var delegate : SaveRecordProtocol?
     
     //MARK: Outlets
     @IBOutlet private weak var topView: UIView!
@@ -39,9 +44,39 @@ class EditContactViewController: UIViewController {
     
     @IBAction private func doneTapped(_ sender: UIButton) {
         
-        dismiss(animated: true) {
-            // call some delegate to get the updates in Details page 
+        dismiss(animated: true) { [weak self] in
+           
+            var dict : [String : Any] = [:]
+            if let image = self?.imageButtonOutlet.image(for: .normal), let data = UIImagePNGRepresentation(image) {
+                dict[Constants.imageData] = data
+            }
+            if let cell1 = self?.getCell(row: 0, section: 0), let firstName = cell1.value.text {
+                dict[Constants.firstName] = firstName
+            }
+            if let cell2 = self?.getCell(row: 1, section: 0), let lastName = cell2.value.text {
+                dict[Constants.lastName] = lastName
+            }
+            if let cell3 = self?.getCell(row: 2, section: 0), let phoneNumber = cell3.value.text {
+                dict[Constants.phoneNumber] = phoneNumber
+            }
+            if let cell4 = self?.getCell(row: 3, section: 0), let emailId = cell4.value.text {
+                dict[Constants.email] = emailId
+            }
+            
+            if self?.model == nil { // coming from Home Screen by Add tapped
+                dict[Constants.createdAt] = "\(Date())"
+            } else { // From Details Page
+                dict[Constants.updatedAt] = "\(Date())"
+            }
+           
+            let contactModel = Contact(dict: dict)
+            self?.delegate?.save(model: contactModel)
         }
+    }
+    
+    private func getCell(row: Int, section : Int) -> EditTableViewCell? {
+        guard let cell = tableView.cellForRow(at: IndexPath(row: row, section: section)) as? EditTableViewCell else { return nil }
+        return cell
     }
     
     @IBAction func imageTapped(_ sender: UIButton) {
@@ -92,8 +127,8 @@ class EditContactViewController: UIViewController {
     }
     
     private func updateImage() {
-        if let importedImage = importedImage {
-            imageButtonOutlet.setImage(importedImage, for: .normal)
+        if let imageData = model?.image, let image = UIImage(data: imageData, scale: 1.0) {
+            imageButtonOutlet.setImage(image, for: .normal)
             imageButtonOutlet.layer.borderWidth = 1
             imageButtonOutlet.layer.borderColor = UIColor.black.cgColor
         }

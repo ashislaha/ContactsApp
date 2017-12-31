@@ -11,13 +11,13 @@ import UIKit
 class ContactDetailsViewController: UIViewController {
 
     public var contactModel : Contact?
-    public var importImage : UIImage?
     
     private var detailCellModel : [DetailsTableViewCellModel] = []
     private var collectionCellModel : [ContactDetailCollectionViewCellModel] = []
     
     // topview
     @IBOutlet weak var topView: UIView!
+    
     @IBOutlet weak var profileImageView: UIImageView! {
         didSet {
             profileImageView.layer.cornerRadius = profileImageView.frame.size.height/2
@@ -34,6 +34,7 @@ class ContactDetailsViewController: UIViewController {
             name.textColor = .black
         }
     }
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
@@ -55,7 +56,28 @@ class ContactDetailsViewController: UIViewController {
     // View Controller life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         updateUI()
+        addEditButton()
+        fetchContact()
+    }
+    
+    private func fetchContact() {
+        guard let id = contactModel?.id else { return }
+        
+        spinner.startAnimating()
+        Parser.getContacts(id:"\(id)") { [weak self] (contacts) in
+            
+            if let contact = contacts.first {
+                self?.contactModel?.email = contact.email
+                self?.contactModel?.phone_number = contact.phone_number
+                
+                DispatchQueue.main.async {
+                    self?.spinner.stopAnimating()
+                    self?.updateDetailsTableViewCellModel()
+                }
+            }
+        }
     }
     
     // update UI 
@@ -64,16 +86,17 @@ class ContactDetailsViewController: UIViewController {
         updateDetailsCollectionCellModel()
         updateName()
         updateImage()
-        addEditButton()
     }
     
     private func updateDetailsTableViewCellModel() {
+        detailCellModel = []
         detailCellModel.append(DetailsTableViewCellModel(name: "Mobile", value: contactModel?.phone_number ?? ""))
         detailCellModel.append(DetailsTableViewCellModel(name: "email", value: contactModel?.email ?? ""))
         tableView.reloadData()
     }
     
     private func updateDetailsCollectionCellModel() {
+        collectionCellModel = []
         collectionCellModel.append(ContactDetailCollectionViewCellModel(cellType: .message, isFavourite: false))
         collectionCellModel.append(ContactDetailCollectionViewCellModel(cellType: .call, isFavourite: false))
         collectionCellModel.append(ContactDetailCollectionViewCellModel(cellType: .email, isFavourite: false))
@@ -88,7 +111,7 @@ class ContactDetailsViewController: UIViewController {
     }
     
     private func updateImage() {
-        if let image = importImage {
+        if let imageData = contactModel?.image, let image = UIImage(data: imageData, scale: 1.0) {
            profileImageView.image = image
         }
     }
@@ -104,8 +127,8 @@ class ContactDetailsViewController: UIViewController {
         
         guard let editContactVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditContactViewController") as? EditContactViewController else { return }
         
+        editContactVC.delegate = self
         editContactVC.model = contactModel
-        editContactVC.importedImage = profileImageView.image
         present(editContactVC, animated: true, completion: nil)
     }
 }
@@ -197,5 +220,36 @@ extension ContactDetailsViewController : UICollectionViewDelegateFlowLayout {
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 4
+    }
+}
+
+//MARK: SaveRecordProtocol
+extension ContactDetailsViewController : SaveRecordProtocol {
+    func save(model: Contact) {
+        
+        if let imageData = model.image {
+            contactModel?.image = imageData
+        }
+        if let firstName = model.first_name {
+            contactModel?.first_name = firstName
+        }
+        if let lastName = model.last_name {
+            contactModel?.last_name = lastName
+        }
+        if let phoneNumber = model.phone_number {
+            contactModel?.phone_number = phoneNumber
+        }
+        if let emailId = model.email {
+            contactModel?.email = emailId
+        }
+        if let updateAt = model.updated_at {
+            contactModel?.updated_at = updateAt
+        }
+        updateUI()
+        
+        // do a PUT call to update the data in server
+        if let model = contactModel {
+            Parser.updateContact(contact: model, requestType: .PUT)
+        }
     }
 }

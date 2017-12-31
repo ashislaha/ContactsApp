@@ -213,6 +213,10 @@
                                 </prototypes>
                                 <sections/>
                             </tableView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="qPi-Y7-mfy">
+                                <rect key="frame" x="169" y="325" width="37" height="37"/>
+                                <color key="color" red="0.40667767770000002" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -220,6 +224,8 @@
                             <constraint firstItem="o8V-0L-a70" firstAttribute="top" secondItem="KHc-av-ESA" secondAttribute="bottom" constant="8" id="VaS-dD-FGn"/>
                             <constraint firstItem="KHc-av-ESA" firstAttribute="trailing" secondItem="gK3-tE-yW3" secondAttribute="trailing" id="Y3z-B5-iFM"/>
                             <constraint firstItem="KHc-av-ESA" firstAttribute="leading" secondItem="gK3-tE-yW3" secondAttribute="leading" id="iuR-Sj-mtm"/>
+                            <constraint firstItem="qPi-Y7-mfy" firstAttribute="centerX" secondItem="gK3-tE-yW3" secondAttribute="centerX" id="kRw-RF-Fhz"/>
+                            <constraint firstItem="qPi-Y7-mfy" firstAttribute="centerY" secondItem="gK3-tE-yW3" secondAttribute="centerY" id="mzM-rl-AYc"/>
                             <constraint firstItem="gK3-tE-yW3" firstAttribute="top" secondItem="KHc-av-ESA" secondAttribute="top" id="qyM-yy-VAk"/>
                             <constraint firstItem="o8V-0L-a70" firstAttribute="leading" secondItem="gK3-tE-yW3" secondAttribute="leading" id="xcZ-jM-uEB"/>
                         </constraints>
@@ -230,6 +236,7 @@
                         <outlet property="collectionView" destination="fXT-Ff-wio" id="Szt-qA-6MP"/>
                         <outlet property="name" destination="uSC-28-ojJ" id="u7j-WZ-bMV"/>
                         <outlet property="profileImageView" destination="6vx-EH-LB3" id="AMO-5L-Jkk"/>
+                        <outlet property="spinner" destination="qPi-Y7-mfy" id="mPN-V6-A56"/>
                         <outlet property="tableView" destination="o8V-0L-a70" id="QRE-Do-Gwt"/>
                         <outlet property="topView" destination="KHc-av-ESA" id="0Yr-Qs-bMY"/>
                     </connections>
@@ -279,7 +286,6 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.40667767770000002" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="bWU-1e-ofM" firstAttribute="centerY" secondItem="xYp-PR-Zsl" secondAttribute="centerY" id="Aes-0H-l39"/>
                                     <constraint firstItem="bWU-1e-ofM" firstAttribute="centerX" secondItem="xYp-PR-Zsl" secondAttribute="centerX" id="cCJ-dL-q5R"/>

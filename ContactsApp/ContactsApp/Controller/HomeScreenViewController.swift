@@ -89,6 +89,11 @@ class HomeScreenViewController: UIViewController {
     @IBAction func addTapped(_ sender: UIBarButtonItem) {
         print("add tapped")
         
+        guard let editContactVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditContactViewController") as? EditContactViewController else { return }
+        
+        editContactVC.delegate = self
+        editContactVC.model = nil
+        present(editContactVC, animated: true, completion: nil)
     }
 }
 
@@ -125,17 +130,34 @@ extension HomeScreenViewController : UITableViewDataSource {
 extension HomeScreenViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("\(model[indexPath.row])")
+        print("\n\(model[indexPath.row])")
         
         guard let detailVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContactDetailsViewController") as? ContactDetailsViewController else { return }
         
         selectedIndexPath = indexPath
         detailVC.contactModel = model[indexPath.row]
-        if let cell = tableView.cellForRow(at: indexPath) as? ContactTableViewCell {
-            detailVC.importImage = cell.profileImage.image  // using the downloaded image, save some data..
+        
+        if let cell = tableView.cellForRow(at: indexPath) as? ContactTableViewCell { // using the downloaded image, save some data..
+            if let image = cell.profileImage.image, let data = UIImagePNGRepresentation(image) {
+                detailVC.contactModel?.image = data
+            }
         }
+        
         navigationController?.pushViewController(detailVC, animated: true)
     }
 }
 
+//MARK: SaveRecordProtocol
+extension HomeScreenViewController : SaveRecordProtocol {
+    
+    func save(model: Contact) {
+        guard let firstName = model.first_name, let lastName = model.last_name, !firstName.isEmpty, !lastName.isEmpty else { return }
+        Parser.updateContact(contact: model, requestType: .POST) { [weak self] in
+            // refresh the contacts to get update
+            DispatchQueue.main.async {
+                self?.getContacts()
+            }
+        }
+    }
+}
 
