@@ -15,8 +15,9 @@ protocol SaveRecordProtocol : class {
 class EditContactViewController: UIViewController {
 
     public var model : Contact?
-    private var detailCellModel : [DetailsTableViewCellModel] = []
     public weak var delegate : SaveRecordProtocol?
+    
+    private var detailCellModel : [DetailsTableViewCellModel] = []
     private var imageUrl : String?
     private var gradientLayer = CAGradientLayer()
     private var tappedTextFieldIndex : Int = 0
@@ -24,14 +25,14 @@ class EditContactViewController: UIViewController {
     //MARK: Outlets
     @IBOutlet private weak var topView: UIView!
     
-    @IBOutlet weak var imageButtonOutlet: UIButton! {
+    @IBOutlet private weak var imageButtonOutlet: UIButton! {
         didSet {
             imageButtonOutlet.layer.cornerRadius = imageButtonOutlet.frame.size.height / 2
             imageButtonOutlet.clipsToBounds = true
         }
     }
     
-    @IBOutlet weak var tableView: UITableView! {
+    @IBOutlet private weak var tableView: UITableView! {
         didSet {
             tableView.dataSource = self
             tableView.delegate = self
@@ -217,7 +218,7 @@ class EditContactViewController: UIViewController {
     }
 }
 
-//MARK:- UIImagePickerControllerDelegate
+//MARK: UIImagePickerControllerDelegate
 extension EditContactViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

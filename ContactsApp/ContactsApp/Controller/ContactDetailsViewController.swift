@@ -15,13 +15,12 @@ class ContactDetailsViewController: UIViewController {
     
     private var detailCellModel : [DetailsTableViewCellModel] = []
     private var collectionCellModel : [ContactDetailCollectionViewCellModel] = []
-    
     private var gradientLayer = CAGradientLayer()
     
-    // topview
-    @IBOutlet weak var topView: UIView!
+    //MARK: Outlets
+    @IBOutlet private weak var topView: UIView!
     
-    @IBOutlet weak var profileImageView: UIImageView! {
+    @IBOutlet private weak var profileImageView: UIImageView! {
         didSet {
             profileImageView.layer.cornerRadius = profileImageView.frame.size.height/2
             profileImageView.clipsToBounds = true
@@ -30,14 +29,14 @@ class ContactDetailsViewController: UIViewController {
         }
     }
     
-    @IBOutlet weak var name: UILabel! {
+    @IBOutlet private weak var name: UILabel! {
         didSet {
             name.font = UIFont.boldSystemFont(ofSize: 18)
             name.textAlignment = .center
             name.textColor = .black
         }
     }
-    @IBOutlet weak var spinner: UIActivityIndicatorView!
+    @IBOutlet private weak var spinner: UIActivityIndicatorView!
     
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
@@ -57,7 +56,7 @@ class ContactDetailsViewController: UIViewController {
         }
     }
     
-    // View Controller life cycle
+    //MARK: View Controller life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -65,25 +64,6 @@ class ContactDetailsViewController: UIViewController {
         addEditButton()
         fetchContact()
         addGradientLayer()
-    }
-    
-    // fetch email and phone number
-    private func fetchContact() {
-        guard let id = contactModel?.id else { return }
-        
-        spinner.startAnimating()
-        Parser.getContacts(id:"\(id)") { [weak self] (contacts) in
-            
-            if let contact = contacts.first {
-                self?.contactModel?.email = contact.email
-                self?.contactModel?.phone_number = contact.phone_number
-                
-                DispatchQueue.main.async {
-                    self?.spinner.stopAnimating()
-                    self?.updateDetailsTableViewCellModel()
-                }
-            }
-        }
     }
     
     // update UI 
@@ -136,6 +116,25 @@ class ContactDetailsViewController: UIViewController {
         editContactVC.delegate = self
         editContactVC.model = contactModel
         present(editContactVC, animated: true, completion: nil)
+    }
+    
+    // fetch email and phone number
+    private func fetchContact() {
+        guard let id = contactModel?.id else { return }
+        
+        spinner.startAnimating()
+        Parser.getContacts(id:"\(id)") { [weak self] (contacts) in
+            
+            if let contact = contacts.first {
+                self?.contactModel?.email = contact.email
+                self?.contactModel?.phone_number = contact.phone_number
+                
+                DispatchQueue.main.async {
+                    self?.spinner.stopAnimating()
+                    self?.updateDetailsTableViewCellModel()
+                }
+            }
+        }
     }
     
     // setup gradients
