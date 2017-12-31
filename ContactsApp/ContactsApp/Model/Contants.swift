@@ -21,6 +21,7 @@ struct Constants {
     
     static let contactEndPoint      = "http://gojek-contacts-app.herokuapp.com/contacts.json" // used for GET and POST
     static let putEndPoint          = "http://gojek-contacts-app.herokuapp.com/contacts/" // 12.json // for PUT and DELETE
+    static let alphabet = ["Fav", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
     
     
     static let id           = "id"

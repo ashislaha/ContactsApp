@@ -15,10 +15,15 @@ class ContactHeaderView : UITableViewHeaderFooterView {
         backgroundColor = .blue
     }
     
+    public var title : String? {
+        didSet {
+            headerLabel.text = title ?? ""
+        }
+    }
+    
     private let headerLabel : UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Header"
         label.textColor = .black
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textAlignment = .center

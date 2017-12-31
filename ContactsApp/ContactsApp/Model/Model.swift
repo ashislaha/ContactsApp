@@ -186,4 +186,32 @@ class Parser {
         }
         return bodyData
     }
+    
+    // get groups from contacts
+    class func getGroupContacts(contacts : [Contact]) -> [String : [Contact]] {
+        
+        var groupContacts : [String : [Contact]] = [:]
+        
+        // insert based on "favourite"
+        let favourites = contacts.filter { (contact) -> Bool in
+            if let isFavourite = contact.favorite, isFavourite {
+                return true
+            }
+            return false
+        }
+        groupContacts["Fav"] = favourites
+        
+        // insert based on "first_name"
+        for i in 1...26 {
+            
+            let alpahbeticContacts = contacts.filter({ (contact) -> Bool in
+                if let firstName = contact.first_name?.uppercased(), firstName.hasPrefix(Constants.alphabet[i]) {
+                    return true
+                }
+                return false
+            })
+            groupContacts[Constants.alphabet[i]] = alpahbeticContacts
+        }
+        return groupContacts
+    }
 }

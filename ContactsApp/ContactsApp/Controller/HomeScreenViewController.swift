@@ -10,11 +10,16 @@ import UIKit
 
 class HomeScreenViewController: UIViewController {
 
-    var model : [Contact] = []
+    private var model : [Contact] = []
+    private var groupModel : [String : [Contact]] = [:] // ["A" : [list of A Contacts], ..... ]
+    private var isGroupEnable : Bool = false 
+    
     private var selectedIndexPath : IndexPath? // store while visiting the details page
     private var shouldReloadContact : Bool = false
     
     //MARK: Outlets
+    
+    @IBOutlet weak var groupButton: UIBarButtonItem!
     @IBOutlet private weak var contactTableView: UITableView! {
         didSet {
             contactTableView.delegate = self
@@ -41,22 +46,6 @@ class HomeScreenViewController: UIViewController {
             relaodContactIfRequired()
         }
     }
-    
-    private func relaodContactIfRequired() {
-        guard let selectedIndexPath = selectedIndexPath, let id = model[selectedIndexPath.row].id else { return }
-        
-        // call a GET request only that contact
-        Parser.getContacts(id: "\(id)", callback: { (contacts) in
-            
-            DispatchQueue.main.async { [weak self] in
-                if let contact = contacts.first {
-                    self?.model[selectedIndexPath.row] = contact
-                    self?.contactTableView.reloadRows(at: [selectedIndexPath], with: .fade)
-                }
-            }
-        })
-    }
-    
     private func registers() {
         contactTableView.register(ContactHeaderView.self, forHeaderFooterViewReuseIdentifier: Constants.headerID)
     }
@@ -71,26 +60,69 @@ class HomeScreenViewController: UIViewController {
         contactTableView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
+    //MARK: Contacts Handling
+    
+    private func relaodContactIfRequired() {
+        guard let selectedIndexPath = selectedIndexPath else { return }
+        
+        var id = 0
+        if isGroupEnable {
+            if let identity = groupModel[Constants.alphabet[selectedIndexPath.section]]?[selectedIndexPath.row].id {
+                id = identity
+            }
+        } else {
+            if let identity = model[selectedIndexPath.row].id {
+                id = identity
+            }
+        }
+       
+        guard id != 0 else { return }
+        
+        // call a GET request only that contact
+        Parser.getContacts(id: "\(id)", callback: { (contacts) in
+            
+            DispatchQueue.main.async { [weak self] in
+                if let contact = contacts.first {
+                    
+                    if let isGroupEnable = self?.isGroupEnable, isGroupEnable {
+                        self?.groupModel[Constants.alphabet[selectedIndexPath.section]]?[selectedIndexPath.row] = contact
+                    } else {
+                        self?.model[selectedIndexPath.row] = contact
+                    }
+                    self?.contactTableView.reloadRows(at: [selectedIndexPath], with: .fade)
+                }
+            }
+        })
+    }
+    
     private func getContacts() {
         
         spinner.startAnimating()
         Parser.getContacts { [weak self] (contacts) in
+            
+            self?.model = contacts
+            self?.convertGroupContacts(contacts: contacts)
+            
             // UI update on main thread
             DispatchQueue.main.async {
-                self?.model = contacts
                 self?.contactTableView.reloadData()
                 self?.spinner.stopAnimating()
             }
         }
     }
     
+    private func convertGroupContacts(contacts : [Contact] ) {
+        groupModel = Parser.getGroupContacts(contacts: contacts)
+    }
+    
     //MARK: IBActions
     @IBAction func groupsTapped(_ sender: UIBarButtonItem) {
-        print("group tapped")
+        isGroupEnable = !isGroupEnable
+        groupButton.title = isGroupEnable ? "Un-Groups" : "Groups"
+        contactTableView.reloadData()
     }
     
     @IBAction func addTapped(_ sender: UIBarButtonItem) {
-        print("add tapped")
         
         guard let editContactVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditContactViewController") as? EditContactViewController else { return }
         
@@ -104,23 +136,32 @@ class HomeScreenViewController: UIViewController {
 extension HomeScreenViewController : UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return isGroupEnable ? 27 : 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return model.count
+        if isGroupEnable {
+            if let contacts = groupModel[Constants.alphabet[section]] {
+                return contacts.count
+            } else {
+                return 0
+            }
+        }  else {
+            return model.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.contactCellId, for: indexPath) as? ContactTableViewCell else { return UITableViewCell() }
         
-        cell.model = model[indexPath.row]
+        cell.model = isGroupEnable ? groupModel[Constants.alphabet[indexPath.section]]?[indexPath.row]  : model[indexPath.row]
         return cell
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Constants.headerID) as? ContactHeaderView else { return nil }
         header.viewSetup()
+        header.title = Constants.alphabet[section]
         return header
     }
     
@@ -138,7 +179,7 @@ extension HomeScreenViewController : UITableViewDelegate {
         guard let detailVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ContactDetailsViewController") as? ContactDetailsViewController else { return }
         
         selectedIndexPath = indexPath
-        detailVC.contactModel = model[indexPath.row]
+        detailVC.contactModel = isGroupEnable ? groupModel[Constants.alphabet[indexPath.section]]?[indexPath.row]  : model[indexPath.row]
         
         if let cell = tableView.cellForRow(at: indexPath) as? ContactTableViewCell { // using the downloaded image, save some data..
             if let image = cell.profileImage.image, let data = UIImagePNGRepresentation(image) {
@@ -148,6 +189,13 @@ extension HomeScreenViewController : UITableViewDelegate {
         
         navigationController?.pushViewController(detailVC, animated: true)
         shouldReloadContact = true
+    }
+    
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return Constants.alphabet
+    }
+    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        return Constants.alphabet.index(of: title) ?? 0
     }
 }
 

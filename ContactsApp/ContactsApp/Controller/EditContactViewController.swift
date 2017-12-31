@@ -19,6 +19,7 @@ class EditContactViewController: UIViewController {
     public weak var delegate : SaveRecordProtocol?
     private var imageUrl : String?
     private var gradientLayer = CAGradientLayer()
+    private var tappedTextFieldIndex : Int = 0
     
     //MARK: Outlets
     @IBOutlet private weak var topView: UIView!
@@ -149,8 +150,40 @@ class EditContactViewController: UIViewController {
     //MARK: View Controller life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         updateUI()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        registerKeyboard()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    //MARK: Keyboard notification
+    private func registerKeyboard() {
+        NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    @objc private func keyboardWillShow(_ sender: Notification) {
+        
+        if let keyboardFrame = sender.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect {
+            let edgeInsets: UIEdgeInsets = UIEdgeInsetsMake(0, 0, keyboardFrame.size.height, 0)
+            tableView.contentInset = edgeInsets
+            tableView.scrollIndicatorInsets = edgeInsets
+            let indexPath = IndexPath(row: tappedTextFieldIndex , section: 0)
+            tableView.scrollToRow(at: indexPath, at: .none, animated: false)
+        }
+    }
+    
+    @objc private func keyboardWillHide(_ sender: Notification) {
+        UIView.animate(withDuration: 0.1, animations: { [weak self] in
+            self?.tableView.contentInset = .zero
+            self?.tableView.scrollIndicatorInsets = .zero
+        })
     }
     
     //MARK: updateUI
@@ -169,6 +202,7 @@ class EditContactViewController: UIViewController {
     }
     
     private func updateDetailsTableViewCellModel() {
+        detailCellModel = []
         detailCellModel.append(DetailsTableViewCellModel(name: "First Name", value: model?.first_name ?? ""))
         detailCellModel.append(DetailsTableViewCellModel(name: "Last Name", value: model?.last_name ?? ""))
         detailCellModel.append(DetailsTableViewCellModel(name: "Mobile", value: model?.phone_number ?? ""))
@@ -213,6 +247,8 @@ extension EditContactViewController : UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.editCell, for: indexPath) as? EditTableViewCell else { return UITableViewCell() }
         
         cell.model = detailCellModel[indexPath.row]
+        cell.value.tag = indexPath.row // to retrive the cell identity while tapping on textfield
+        cell.delegate = self
         return cell
     }
 }
@@ -220,5 +256,18 @@ extension EditContactViewController : UITableViewDataSource {
 //MARK: UITableViewDelegate
 extension EditContactViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("cell tapped")
+    }
+}
+
+//MARK: EditCellDelegate
+extension EditContactViewController : EditCellDelegate {
+    
+    func getIndex(val: Int) {
+        tappedTextFieldIndex = val
+    }
+    
+    func getValue(text: String?, index: Int) {
+        detailCellModel[index].value = text ?? ""
     }
 }

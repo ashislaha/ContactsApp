@@ -103,6 +103,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="contactTableView" destination="nBQ-Vl-teF" id="d51-xK-RUX"/>
+                        <outlet property="groupButton" destination="TFx-4d-ytX" id="xLG-he-Nzq"/>
                         <outlet property="spinner" destination="Wcf-Ds-Qmp" id="Aod-YU-HIA"/>
                     </connections>
                 </viewController>

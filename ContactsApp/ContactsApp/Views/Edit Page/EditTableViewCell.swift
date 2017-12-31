@@ -8,8 +8,15 @@
 
 import UIKit
 
+protocol EditCellDelegate : class {
+    func getIndex(val : Int)
+    func getValue(text : String?, index : Int)
+}
+
 class EditTableViewCell: UITableViewCell {
 
+    public weak var delegate : EditCellDelegate?
+    
     public var model : DetailsTableViewCellModel? {
         didSet {
             name.text = model?.name ?? ""
@@ -27,7 +34,11 @@ class EditTableViewCell: UITableViewCell {
         }
     }
     
-    @IBOutlet  weak var value: UITextField!
+    @IBOutlet  weak var value: UITextField! {
+        didSet {
+            value.delegate = self
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -35,5 +46,20 @@ class EditTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+    }
+}
+
+extension EditTableViewCell : UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        delegate?.getValue(text: textField.text, index: textField.tag)
+        return false
+    }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        print("Text Field tapped : Row(\(textField.tag))")
+        delegate?.getIndex(val: textField.tag)
+        return true
     }
 }

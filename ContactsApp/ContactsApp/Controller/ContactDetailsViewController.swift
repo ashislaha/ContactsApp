@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MessageUI
 
 class ContactDetailsViewController: UIViewController {
 
@@ -196,25 +197,62 @@ extension ContactDetailsViewController : UICollectionViewDelegate {
         switch cellType {
         case .message:
             print("Message tapped")
+            sendMessage()
             
         case .call:
             print("call tapped")
+            sendCall()
             
         case .email:
             print("email tapped")
+            sendMail()
             
         case .favourite:
             print("favourite tapped")
-            
-            guard let isFavourite = contactModel?.favorite else { return }
-            contactModel?.favorite = !isFavourite // update contact model
-            collectionCellModel[3].isFavourite = !isFavourite // update collection view cell model
-            collectionView.reloadItems(at: [indexPath])
-            
-            // do a PUT call to update the favourite
-            if let contactModel = contactModel {
-                Parser.updateContact(contact:contactModel, requestType: .PUT)
-            }
+            favouriteTapped(indexPath: indexPath)
+        }
+    }
+    
+    private func sendMessage() {
+        guard let contactNumber = contactModel?.phone_number else { return }
+        if let url = URL(string: "sms:\(contactNumber)"), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            showAlert(header: "Cannot send SMS", message: "This Facility is not available")
+        }
+    }
+    
+    private func sendCall() {
+        guard let contactNumber = contactModel?.phone_number else { return }
+        if let url = URL(string: "tel://\(contactNumber)"), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            showAlert(header: "Call Unavailable", message: "This Facility is not available for this device")
+        }
+    }
+    
+    private func sendMail() {
+        guard let emailId = contactModel?.email else { return }
+        
+        if MFMailComposeViewController.canSendMail() {
+            let mailController = MFMailComposeViewController()
+            mailController.setToRecipients([emailId])
+            mailController.delegate = self
+            present(mailController, animated: true, completion: nil)
+        } else {
+             showAlert(header: "Cannot send Mail", message: "This Facility is not available")
+        }
+    }
+    
+    private func favouriteTapped(indexPath : IndexPath) {
+        guard let isFavourite = contactModel?.favorite else { return }
+        contactModel?.favorite = !isFavourite // update contact model
+        collectionCellModel[3].isFavourite = !isFavourite // update collection view cell model
+        collectionView.reloadItems(at: [indexPath])
+        
+        // do a PUT call to update the favourite
+        if let contactModel = contactModel {
+            Parser.updateContact(contact:contactModel, requestType: .PUT)
         }
     }
 }
@@ -262,3 +300,35 @@ extension ContactDetailsViewController : SaveRecordProtocol {
         updateUI()
     }
 }
+
+//MARK: MFMailComposeViewControllerDelegate
+extension ContactDetailsViewController : MFMailComposeViewControllerDelegate, UINavigationControllerDelegate {
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        if let error = error {
+            print(error.localizedDescription)
+        } else {
+            switch result {
+            case .cancelled : print("Mail sending cancelled")
+            case .failed: print("Mail sending failed")
+            case .saved: print("Mail has saved")
+            case .sent: print("Mail has sent")
+            }
+        }
+        controller.dismiss(animated: true, completion: nil)
+    }
+}
+
+//MARK: Error Handling Alert
+extension ContactDetailsViewController {
+    
+    func showAlert(header : String? = "Header", message : String? = "Message")  {
+        let alertController = UIAlertController(title: header, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default) { (alert) in
+            alertController.dismiss(animated: true, completion: nil)
+        }
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
+    }
+}
+
