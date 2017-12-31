@@ -20,7 +20,7 @@ struct Constants {
     static let greenyColor = UIColor(red: 86/255.0, green: 223/255.0, blue: 196/255.0, alpha: 1.0)
     
     static let contactEndPoint = "http://gojek-contacts-app.herokuapp.com/contacts.json" // used for GET and POST
-    static let putEndPoint = "http://gojek-contacts-app.herokuapp.com/contacts/" // 12.json // for PUT and delete
+    static let putEndPoint = "http://gojek-contacts-app.herokuapp.com/contacts/" // 12.json // for PUT and DELETE
 }
 
 

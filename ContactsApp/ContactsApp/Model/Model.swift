@@ -28,6 +28,10 @@ struct Contact {
         last_name = dict["last_name"] as? String
         favorite = dict["favorite"] as? Bool
         url = dict["url"] as? String
+        phone_number = dict["phone_number"] as? String
+        email = dict["email"] as? String
+        created_at = dict["created_at"] as? String
+        updated_at = dict["updated_at"] as? String
     }
 }
 
@@ -41,17 +45,17 @@ enum CellType : String {
 
 // data request type
 enum NetworkRequest : String {
-    case get = "get"
-    case post = "post"
-    case put = "put"
-    case delete = "delete"
+    case GET = "get"
+    case POST = "post"
+    case PUT = "put"
+    case DELETE = "delete"
 }
 
 // Data Parser
 class Parser {
     
-    // Get
-    class func parseContacts(id : String? = nil, callback : (([Contact])->())?) {
+    // GET
+    class func getContacts(id : String? = nil, callback : (([Contact])->())?) {
         
         var urlStr : String = ""
         if let id = id {
@@ -86,19 +90,18 @@ class Parser {
         session.resume()
     }
     
-    // Put or Post
-    class func postContact(contact : Contact, requestType : NetworkRequest) {
+    // PUT / POST / DELETE
+    class func updateContact(contact : Contact, requestType : NetworkRequest) {
         
         // update url based on "put" or "post"
-        
         var urlString : String = ""
-        if requestType == .put || requestType == .delete  { // put OR delete
+        if requestType == .PUT || requestType == .DELETE  { // put OR delete
             if let urlStr = contact.url {
                 urlString = urlStr
             } else if let id = contact.id {
                 urlString = Constants.putEndPoint + "\(id).json"
             }
-        } else if requestType == .post { // post
+        } else if requestType == .POST { // post
             urlString = Constants.contactEndPoint
         }
         
@@ -111,18 +114,19 @@ class Parser {
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         // body
-        let dict = requestType == .delete ? [:] : getDictionary(contact: contact)
+        let dict = requestType == .DELETE ? [:] : getDictionary(contact: contact)
         
         guard let data = getJsonDataFromDictionary(jsonDict: dict) else { return }
         
+        // session
         let session = URLSession.shared.uploadTask(with: urlRequest, from: data) { (data, response, error) in
             
             if error == nil {
-                if requestType == .post {
+                if requestType == .POST {
                     print("Successfully done POST request")
-                } else if requestType == .put {
+                } else if requestType == .PUT {
                     print("Successfully done PUT request")
-                } else if requestType == .delete {
+                } else if requestType == .DELETE {
                      print("Successfully DELETED")
                 }
             }

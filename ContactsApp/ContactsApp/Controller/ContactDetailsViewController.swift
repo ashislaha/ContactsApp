@@ -8,11 +8,6 @@
 
 import UIKit
 
-struct DetailsTableViewCellModel {
-    var name : String
-    var value : String
-}
-
 class ContactDetailsViewController: UIViewController {
 
     public var contactModel : Contact?
@@ -65,14 +60,14 @@ class ContactDetailsViewController: UIViewController {
     
     // update UI 
     private func updateUI() {
-        updateDetailsCellModel()
+        updateDetailsTableViewCellModel()
         updateDetailsCollectionCellModel()
-        addEditButton()
         updateName()
         updateImage()
+        addEditButton()
     }
     
-    private  func updateDetailsCellModel(){
+    private func updateDetailsTableViewCellModel() {
         detailCellModel.append(DetailsTableViewCellModel(name: "Mobile", value: contactModel?.phone_number ?? ""))
         detailCellModel.append(DetailsTableViewCellModel(name: "email", value: contactModel?.email ?? ""))
         tableView.reloadData()
@@ -110,6 +105,7 @@ class ContactDetailsViewController: UIViewController {
         guard let editContactVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditContactViewController") as? EditContactViewController else { return }
         
         editContactVC.model = contactModel
+        editContactVC.importedImage = profileImageView.image
         present(editContactVC, animated: true, completion: nil)
     }
 }
@@ -161,6 +157,7 @@ extension ContactDetailsViewController : UICollectionViewDataSource {
 extension ContactDetailsViewController : UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
         let cellType = collectionCellModel[indexPath.row].cellType
         switch cellType {
         case .message:
@@ -182,7 +179,7 @@ extension ContactDetailsViewController : UICollectionViewDelegate {
             
             // do a PUT call to update the favourite
             if let contactModel = contactModel {
-                Parser.postContact(contact:contactModel, requestType: .put)
+                Parser.updateContact(contact:contactModel, requestType: .PUT)
             }
         }
     }

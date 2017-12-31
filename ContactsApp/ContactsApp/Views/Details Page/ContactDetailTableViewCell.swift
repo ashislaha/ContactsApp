@@ -8,6 +8,11 @@
 
 import UIKit
 
+struct DetailsTableViewCellModel {
+    var name : String
+    var value : String
+}
+
 class ContactDetailTableViewCell : UITableViewCell {
     
     // model

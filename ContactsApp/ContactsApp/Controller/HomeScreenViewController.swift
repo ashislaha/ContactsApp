@@ -40,19 +40,18 @@ class HomeScreenViewController: UIViewController {
     }
     
     private func relaodContactIfRequired() {
-        if let selectedIndexPath = selectedIndexPath, let id = model[selectedIndexPath.row].id {
+        guard let selectedIndexPath = selectedIndexPath, let id = model[selectedIndexPath.row].id else { return }
+        
+        // call a GET request only that contact
+        Parser.getContacts(id: "\(id)", callback: { (contacts) in
             
-            // call a GET request only that contact
-            Parser.parseContacts(id: "\(id)", callback: { (contacts) in
-                
-                DispatchQueue.main.async { [weak self] in
-                    if let contact = contacts.first {
-                        self?.model[selectedIndexPath.row] = contact
-                        self?.contactTableView.reloadRows(at: [selectedIndexPath], with: .fade)
-                    }
+            DispatchQueue.main.async { [weak self] in
+                if let contact = contacts.first {
+                    self?.model[selectedIndexPath.row] = contact
+                    self?.contactTableView.reloadRows(at: [selectedIndexPath], with: .fade)
                 }
-            })  
-        }
+            }
+        })
     }
     
     private func registers() {
@@ -72,7 +71,7 @@ class HomeScreenViewController: UIViewController {
     private func getContacts() {
         
         spinner.startAnimating()
-        Parser.parseContacts { [weak self] (contacts) in
+        Parser.getContacts { [weak self] (contacts) in
             // UI update on main thread
             DispatchQueue.main.async {
                 self?.model = contacts

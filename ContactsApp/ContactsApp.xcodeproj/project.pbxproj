@@ -20,6 +20,7 @@
 		805E213E1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E213D1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift */; };
 		805E21401FF7C96400A0F702 /* ContactDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E213F1FF7C96400A0F702 /* ContactDetailCollectionViewCell.swift */; };
 		805E21441FF8014000A0F702 /* EditContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E21431FF8014000A0F702 /* EditContactViewController.swift */; };
+		80F973AB1FF89421000D4380 /* EditTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F973AA1FF89421000D4380 /* EditTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		805E213D1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailTableViewCell.swift; sourceTree = "<group>"; };
 		805E213F1FF7C96400A0F702 /* ContactDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailCollectionViewCell.swift; sourceTree = "<group>"; };
 		805E21431FF8014000A0F702 /* EditContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditContactViewController.swift; sourceTree = "<group>"; };
+		80F973AA1FF89421000D4380 /* EditTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 			children = (
 				805E21411FF7CB7900A0F702 /* Home Screen */,
 				805E21421FF7CB8A00A0F702 /* Details Page */,
+				80F973AC1FF89426000D4380 /* Edit Page */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -134,6 +137,14 @@
 				805E213F1FF7C96400A0F702 /* ContactDetailCollectionViewCell.swift */,
 			);
 			path = "Details Page";
+			sourceTree = "<group>";
+		};
+		80F973AC1FF89426000D4380 /* Edit Page */ = {
+			isa = PBXGroup;
+			children = (
+				80F973AA1FF89421000D4380 /* EditTableViewCell.swift */,
+			);
+			path = "Edit Page";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -217,6 +228,7 @@
 				805E21321FF76DC900A0F702 /* ContactTableViewCell.swift in Sources */,
 				805E21201FF768EB00A0F702 /* HomeScreenViewController.swift in Sources */,
 				805E211E1FF768EB00A0F702 /* AppDelegate.swift in Sources */,
+				80F973AB1FF89421000D4380 /* EditTableViewCell.swift in Sources */,
 				805E21301FF76C3000A0F702 /* Contants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
