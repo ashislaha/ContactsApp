@@ -71,6 +71,7 @@ class ContactDetailCollectionViewCell: UICollectionViewCell {
         addSubview(imageView)
         addSubview(label)
         layoutSetup()
+        backgroundColor = .clear
     }
     
     // view loading

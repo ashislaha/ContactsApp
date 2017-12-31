@@ -37,4 +37,13 @@ struct Constants {
     
 }
 
+//MARK: Get Greeny Gradient effect
+
+extension CAGradientLayer {
+    func getGradientEffect(frame : CGRect) {
+        self.frame = frame
+        self.colors = [UIColor(white: 1.0, alpha: 0.2).cgColor, UIColor(white: 1.0, alpha: 0.1).cgColor, Constants.greenyColor.withAlphaComponent(0.5).cgColor]
+        self.locations = [0.0, 0.01, 1.0]
+    }
+}
 

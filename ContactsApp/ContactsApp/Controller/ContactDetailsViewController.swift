@@ -15,6 +15,8 @@ class ContactDetailsViewController: UIViewController {
     private var detailCellModel : [DetailsTableViewCellModel] = []
     private var collectionCellModel : [ContactDetailCollectionViewCellModel] = []
     
+    private var gradientLayer = CAGradientLayer()
+    
     // topview
     @IBOutlet weak var topView: UIView!
     
@@ -41,6 +43,7 @@ class ContactDetailsViewController: UIViewController {
             collectionView.delegate = self
             collectionView.dataSource = self
             collectionView.register(ContactDetailCollectionViewCell.self, forCellWithReuseIdentifier: Constants.collectionViewCell)
+            collectionView.backgroundColor = .clear
         }
     }
     
@@ -60,8 +63,10 @@ class ContactDetailsViewController: UIViewController {
         updateUI()
         addEditButton()
         fetchContact()
+        addGradientLayer()
     }
     
+    // fetch email and phone number
     private func fetchContact() {
         guard let id = contactModel?.id else { return }
         
@@ -130,6 +135,12 @@ class ContactDetailsViewController: UIViewController {
         editContactVC.delegate = self
         editContactVC.model = contactModel
         present(editContactVC, animated: true, completion: nil)
+    }
+    
+    // setup gradients
+    private func addGradientLayer() {
+        gradientLayer.getGradientEffect(frame: topView.frame)
+        topView.layer.insertSublayer(gradientLayer, at: 0)
     }
 }
 
@@ -245,11 +256,9 @@ extension ContactDetailsViewController : SaveRecordProtocol {
         if let updateAt = model.updated_at {
             contactModel?.updated_at = updateAt
         }
-        updateUI()
-        
-        // do a PUT call to update the data in server
-        if let model = contactModel {
-            Parser.updateContact(contact: model, requestType: .PUT)
+        if let profileUrl = model.profile_pic {
+            contactModel?.profile_pic = profileUrl
         }
+        updateUI()
     }
 }

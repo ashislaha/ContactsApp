@@ -96,7 +96,7 @@ class Parser {
     }
     
     // PUT / POST / DELETE
-    class func updateContact(contact : Contact, requestType : NetworkRequest, completionHandler : (()->())? = nil) {
+    class func updateContact(contact : Contact, requestType : NetworkRequest, completionHandler : ((Any?)->())? = nil) {
         
         // update url based on "put" or "post"
         var urlString : String = ""
@@ -141,7 +141,9 @@ class Parser {
                 } else if requestType == .DELETE {
                      print("Successfully DELETED")
                 }
-                completionHandler?()
+                DispatchQueue.main.async {
+                    completionHandler?(responseJSON)
+                }
             }
         }
         session.resume()

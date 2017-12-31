@@ -12,6 +12,7 @@ class HomeScreenViewController: UIViewController {
 
     var model : [Contact] = []
     private var selectedIndexPath : IndexPath? // store while visiting the details page
+    private var shouldReloadContact : Bool = false
     
     //MARK: Outlets
     @IBOutlet private weak var contactTableView: UITableView! {
@@ -36,7 +37,9 @@ class HomeScreenViewController: UIViewController {
         super.viewWillAppear(animated)
         
         // reload the cell if coming from detail VC
-        relaodContactIfRequired()
+        if shouldReloadContact {
+            relaodContactIfRequired()
+        }
     }
     
     private func relaodContactIfRequired() {
@@ -144,20 +147,16 @@ extension HomeScreenViewController : UITableViewDelegate {
         }
         
         navigationController?.pushViewController(detailVC, animated: true)
+        shouldReloadContact = true
     }
 }
 
 //MARK: SaveRecordProtocol
 extension HomeScreenViewController : SaveRecordProtocol {
     
-    func save(model: Contact) {
-        guard let firstName = model.first_name, let lastName = model.last_name, !firstName.isEmpty, !lastName.isEmpty else { return }
-        Parser.updateContact(contact: model, requestType: .POST) { [weak self] in
-            // refresh the contacts to get update
-            DispatchQueue.main.async {
-                self?.getContacts()
-            }
-        }
+    func save(model: Contact) { // new contact
+        shouldReloadContact = false
+        getContacts()
     }
 }
 
