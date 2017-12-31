@@ -98,19 +98,20 @@ class Parser {
     // PUT / POST / DELETE
     class func updateContact(contact : Contact, requestType : NetworkRequest, completionHandler : ((Any?)->())? = nil) {
         
-        // update url based on "put" or "post"
+        // update url based on "PUT" or "POST"
         var urlString : String = ""
-        if requestType == .PUT || requestType == .DELETE  { // put OR delete
+        if requestType == .PUT || requestType == .DELETE  { // PUT / DELETE
             if let urlStr = contact.url {
                 urlString = urlStr
             } else if let id = contact.id {
                 urlString = Constants.putEndPoint + "\(id).json"
             }
-        } else if requestType == .POST { // post
+        } else if requestType == .POST { // POST
             urlString = Constants.contactEndPoint
         }
         
         print("\n\(requestType.rawValue) URL : \(urlString)")
+        
         // validation
         guard let url = URL(string: urlString), !urlString.isEmpty else { return }
         
@@ -131,7 +132,7 @@ class Parser {
                 
                 let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
                 if let responseJSON = responseJSON as? [String: Any] {
-                    print("\n Response Dictionary :",responseJSON)
+                    print("\nResponse Dictionary :",responseJSON)
                 }
                 
                 if requestType == .POST {
@@ -149,7 +150,45 @@ class Parser {
         session.resume()
     }
     
-    private class func getDictionary(contact : Contact) -> [String : Any] {
+    // get groups from contacts
+    class func getGroupContacts(contacts : [Contact]) -> [String : [Contact]] {
+        
+        var groupContacts : [String : [Contact]] = [:]
+        
+        // insert based on "favourite"
+        let favourites = contacts.filter { (contact) -> Bool in
+            if let isFavourite = contact.favorite, isFavourite {
+                return true
+            }
+            return false
+        }
+        groupContacts["Fav"] = favourites
+        
+        // insert based on "first_name"
+        for i in 1...26 {
+            
+            let alpahbeticContacts = contacts.filter({ (contact) -> Bool in
+                
+                // do not consider favourite again
+                if let isFavourite = contact.favorite, isFavourite {
+                    return false
+                }
+                // check 1st char of first_name
+                if let firstName = contact.first_name?.uppercased(), firstName.hasPrefix(Constants.alphabet[i]) {
+                    return true
+                }
+                return false
+            })
+            groupContacts[Constants.alphabet[i]] = alpahbeticContacts
+        }
+        return groupContacts
+    }
+}
+
+//MARK: Private extension
+private extension Parser {
+    
+    class func getDictionary(contact : Contact) -> [String : Any] {
         var dict : [String : Any] = [:]
         
         if let firstName = contact.first_name {
@@ -179,39 +218,11 @@ class Parser {
         return dict
     }
     
-    private class func getJsonDataFromDictionary(jsonDict httpBody: [String: Any]?) -> Data? {
+    class func getJsonDataFromDictionary(jsonDict httpBody: [String: Any]?) -> Data? {
         var bodyData: Data? = nil
         if let httpBody = httpBody {
             bodyData = try? JSONSerialization.data(withJSONObject: httpBody, options: .prettyPrinted)
         }
         return bodyData
-    }
-    
-    // get groups from contacts
-    class func getGroupContacts(contacts : [Contact]) -> [String : [Contact]] {
-        
-        var groupContacts : [String : [Contact]] = [:]
-        
-        // insert based on "favourite"
-        let favourites = contacts.filter { (contact) -> Bool in
-            if let isFavourite = contact.favorite, isFavourite {
-                return true
-            }
-            return false
-        }
-        groupContacts["Fav"] = favourites
-        
-        // insert based on "first_name"
-        for i in 1...26 {
-            
-            let alpahbeticContacts = contacts.filter({ (contact) -> Bool in
-                if let firstName = contact.first_name?.uppercased(), firstName.hasPrefix(Constants.alphabet[i]) {
-                    return true
-                }
-                return false
-            })
-            groupContacts[Constants.alphabet[i]] = alpahbeticContacts
-        }
-        return groupContacts
     }
 }

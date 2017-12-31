@@ -85,26 +85,26 @@ class EditContactViewController: UIViewController {
         guard let firstName = contactModel.first_name, let lastName = contactModel.last_name, !firstName.isEmpty, !lastName.isEmpty else { return }
         
         if model == nil { // POST request - New Contact
-            
             Parser.updateContact(contact: contactModel, requestType: .POST) { [weak self] (response)  in
-                
-                // handle error case
-                
-                // on succssful POST
-                self?.dismiss(animated: true) {
-                    self?.delegate?.save(model: contactModel)
-                }
+                self?.handleResponse(response: response, contactModel: contactModel)
             }
             
         } else { // PUT - Update Contact
             Parser.updateContact(contact: contactModel, requestType: .PUT) { [weak self] (response) in
-                
-                // handle error case 
-                
-                // on succssful POST
-                self?.dismiss(animated: true) {
-                    self?.delegate?.save(model: contactModel)
-                }
+                self?.handleResponse(response: response, contactModel: contactModel)
+            }
+        }
+    }
+    
+    private func handleResponse(response : Any?, contactModel : Contact) {
+        guard let response = response as? [String : Any]  else { return }
+        // handle error case
+        if let errors = response["errors"] as? [String] {
+            showAlert(header: "ERROR", message: errors.description)
+        } else {
+            // on succssful POST
+            dismiss(animated: true) {
+                self.delegate?.save(model: contactModel)
             }
         }
     }

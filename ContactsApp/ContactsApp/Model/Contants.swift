@@ -16,13 +16,13 @@ struct Constants {
     static let detailCell           = "detailCell"
     static let editCell             = "editCell"
     static let collectionViewCell   = "collectionViewCell"
+    static let all                  = "All"
     
     static let greenyColor          = UIColor(red: 86/255.0, green: 223/255.0, blue: 196/255.0, alpha: 1.0)
     
     static let contactEndPoint      = "http://gojek-contacts-app.herokuapp.com/contacts.json" // used for GET and POST
     static let putEndPoint          = "http://gojek-contacts-app.herokuapp.com/contacts/" // 12.json // for PUT and DELETE
     static let alphabet = ["Fav", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
-    
     
     static let id           = "id"
     static let profilePic   = "profile_pic"
@@ -39,7 +39,6 @@ struct Constants {
 }
 
 //MARK: Get Greeny Gradient effect
-
 extension CAGradientLayer {
     func getGradientEffect(frame : CGRect) {
         self.frame = frame
@@ -48,3 +47,15 @@ extension CAGradientLayer {
     }
 }
 
+//MARK: Error Handling Alert
+extension UIViewController {
+    
+    func showAlert(header : String? = "Header", message : String? = "Message")  {
+        let alertController = UIAlertController(title: header, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default) { (alert) in
+            alertController.dismiss(animated: true, completion: nil)
+        }
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
+    }
+}

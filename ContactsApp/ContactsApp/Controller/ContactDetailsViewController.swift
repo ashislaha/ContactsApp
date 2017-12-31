@@ -252,7 +252,7 @@ extension ContactDetailsViewController : UICollectionViewDelegate {
         
         // do a PUT call to update the favourite
         if let contactModel = contactModel {
-            Parser.updateContact(contact:contactModel, requestType: .PUT)
+            Parser.updateContact(contact:contactModel, requestType: .PUT) // no need of error handling here
         }
     }
 }
@@ -316,19 +316,6 @@ extension ContactDetailsViewController : MFMailComposeViewControllerDelegate, UI
             }
         }
         controller.dismiss(animated: true, completion: nil)
-    }
-}
-
-//MARK: Error Handling Alert
-extension ContactDetailsViewController {
-    
-    func showAlert(header : String? = "Header", message : String? = "Message")  {
-        let alertController = UIAlertController(title: header, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default) { (alert) in
-            alertController.dismiss(animated: true, completion: nil)
-        }
-        alertController.addAction(okAction)
-        present(alertController, animated: true, completion: nil)
     }
 }
 

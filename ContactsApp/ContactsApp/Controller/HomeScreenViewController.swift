@@ -10,23 +10,22 @@ import UIKit
 
 class HomeScreenViewController: UIViewController {
 
-    private var model : [Contact] = []
+    private var model : [Contact] = [] // [list of contacts] used for un-groups
     private var groupModel : [String : [Contact]] = [:] // ["A" : [list of A Contacts], ..... ]
     private var isGroupEnable : Bool = false 
     
     private var selectedIndexPath : IndexPath? // store while visiting the details page
-    private var shouldReloadContact : Bool = false
+    private var shouldReloadContact : Bool = false // reload the cell if coming from detail VC
     
     //MARK: Outlets
-    
-    @IBOutlet weak var groupButton: UIBarButtonItem!
+    @IBOutlet private weak var groupButton: UIBarButtonItem!
     @IBOutlet private weak var contactTableView: UITableView! {
         didSet {
             contactTableView.delegate = self
             contactTableView.dataSource = self
         }
     }
-    @IBOutlet weak var spinner: UIActivityIndicatorView!
+    @IBOutlet private weak var spinner: UIActivityIndicatorView!
     
     //MARK: View Controller life cycle
     override func viewDidLoad() {
@@ -41,11 +40,11 @@ class HomeScreenViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // reload the cell if coming from detail VC
         if shouldReloadContact {
             relaodContactIfRequired()
         }
     }
+    
     private func registers() {
         contactTableView.register(ContactHeaderView.self, forHeaderFooterViewReuseIdentifier: Constants.headerID)
     }
@@ -129,6 +128,7 @@ class HomeScreenViewController: UIViewController {
         editContactVC.delegate = self
         editContactVC.model = nil
         present(editContactVC, animated: true, completion: nil)
+        shouldReloadContact = false
     }
 }
 
@@ -161,7 +161,7 @@ extension HomeScreenViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Constants.headerID) as? ContactHeaderView else { return nil }
         header.viewSetup()
-        header.title = Constants.alphabet[section]
+        header.title = isGroupEnable ? Constants.alphabet[section] : Constants.all
         return header
     }
     
@@ -192,18 +192,17 @@ extension HomeScreenViewController : UITableViewDelegate {
     }
     
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return Constants.alphabet
+        return isGroupEnable ? Constants.alphabet : []
     }
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        return Constants.alphabet.index(of: title) ?? 0
+        return isGroupEnable ? Constants.alphabet.index(of: title) ?? 0 : 0
     }
 }
 
 //MARK: SaveRecordProtocol
 extension HomeScreenViewController : SaveRecordProtocol {
     
-    func save(model: Contact) { // new contact
-        shouldReloadContact = false
+    func save(model: Contact) {
         getContacts()
     }
 }
