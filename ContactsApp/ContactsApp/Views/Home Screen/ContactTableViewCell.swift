@@ -8,10 +8,11 @@
 
 import UIKit
 
-// add a NSCache for caching the images
-var cacheImages = NSCache<NSString, UIImage>()
 
 class ContactTableViewCell : UITableViewCell {
+    
+    // add a NSCache for caching the images
+    var cacheImages = NSCache<NSString, UIImage>()
     
     // model
     public var model : Contact? {
@@ -64,7 +65,7 @@ class ContactTableViewCell : UITableViewCell {
                 
                 DispatchQueue.main.async { [weak self] in
                     guard let image = UIImage(data: data) else { return }
-                    cacheImages.setObject(image, forKey: NSString(string: urlString)) // setting into cache
+                    self?.cacheImages.setObject(image, forKey: NSString(string: urlString)) // setting into cache
                     self?.profileImage.image = image
                 }
             }

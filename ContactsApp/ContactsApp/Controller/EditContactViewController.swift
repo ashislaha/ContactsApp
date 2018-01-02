@@ -16,16 +16,16 @@ class EditContactViewController: UIViewController {
 
     public var model : Contact?
     public weak var delegate : SaveRecordProtocol?
-    
-    private var detailCellModel : [DetailsTableViewCellModel] = []
-    private var imageUrl : String?
     private var gradientLayer = CAGradientLayer()
-    private var tappedTextFieldIndex : Int = 0
+    
+    var detailCellModel : [DetailsTableViewCellModel] = []
+    var imageUrl : String?
+    var tappedTextFieldIndex : Int = 0
     
     //MARK: Outlets
     @IBOutlet private weak var topView: UIView!
     
-    @IBOutlet private weak var imageButtonOutlet: UIButton! {
+    @IBOutlet weak var imageButtonOutlet: UIButton! {
         didSet {
             imageButtonOutlet.layer.cornerRadius = imageButtonOutlet.frame.size.height / 2
             imageButtonOutlet.clipsToBounds = true
@@ -218,57 +218,3 @@ class EditContactViewController: UIViewController {
     }
 }
 
-//MARK: UIImagePickerControllerDelegate
-extension EditContactViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
-        guard let image = info[UIImagePickerControllerEditedImage] as? UIImage else { return }
-        imageUrl = info[UIImagePickerControllerImageURL] as? String
-        imageButtonOutlet.setImage(image, for: .normal)
-        picker.dismiss(animated: true, completion: nil)
-    }
-}
-
-//MARK: UITableViewDataSource
-extension EditContactViewController : UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return detailCellModel.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.editCell, for: indexPath) as? EditTableViewCell else { return UITableViewCell() }
-        
-        cell.model = detailCellModel[indexPath.row]
-        cell.value.tag = indexPath.row // to retrive the cell identity while tapping on textfield
-        cell.delegate = self
-        return cell
-    }
-}
-
-//MARK: UITableViewDelegate
-extension EditContactViewController : UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("cell tapped")
-    }
-}
-
-//MARK: EditCellDelegate
-extension EditContactViewController : EditCellDelegate {
-    
-    func getIndex(val: Int) {
-        tappedTextFieldIndex = val
-    }
-    
-    func getValue(text: String?, index: Int) {
-        detailCellModel[index].value = text ?? ""
-    }
-}

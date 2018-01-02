@@ -20,6 +20,10 @@
 		805E213E1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E213D1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift */; };
 		805E21401FF7C96400A0F702 /* ContactDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E213F1FF7C96400A0F702 /* ContactDetailCollectionViewCell.swift */; };
 		805E21441FF8014000A0F702 /* EditContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805E21431FF8014000A0F702 /* EditContactViewController.swift */; };
+		808720531FFBC9200039BFD8 /* NetworkLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808720521FFBC9200039BFD8 /* NetworkLayer.swift */; };
+		808720561FFBCA040039BFD8 /* HomeScreen+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808720551FFBCA040039BFD8 /* HomeScreen+Extensions.swift */; };
+		808720581FFBCB230039BFD8 /* ContactDetails+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808720571FFBCB230039BFD8 /* ContactDetails+Extensions.swift */; };
+		8087205A1FFBCBC50039BFD8 /* EditContact+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808720591FFBCBC50039BFD8 /* EditContact+Extensions.swift */; };
 		80F973AB1FF89421000D4380 /* EditTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F973AA1FF89421000D4380 /* EditTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +43,10 @@
 		805E213D1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailTableViewCell.swift; sourceTree = "<group>"; };
 		805E213F1FF7C96400A0F702 /* ContactDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailCollectionViewCell.swift; sourceTree = "<group>"; };
 		805E21431FF8014000A0F702 /* EditContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditContactViewController.swift; sourceTree = "<group>"; };
+		808720521FFBC9200039BFD8 /* NetworkLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLayer.swift; sourceTree = "<group>"; };
+		808720551FFBCA040039BFD8 /* HomeScreen+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeScreen+Extensions.swift"; sourceTree = "<group>"; };
+		808720571FFBCB230039BFD8 /* ContactDetails+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactDetails+Extensions.swift"; sourceTree = "<group>"; };
+		808720591FFBCBC50039BFD8 /* EditContact+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditContact+Extensions.swift"; sourceTree = "<group>"; };
 		80F973AA1FF89421000D4380 /* EditTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -73,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				805E211D1FF768EB00A0F702 /* AppDelegate.swift */,
+				808720541FFBC9270039BFD8 /* Network Layer */,
 				805E21371FF7777F00A0F702 /* Model */,
 				805E21381FF7778900A0F702 /* Controller */,
 				805E21391FF777A000A0F702 /* Views */,
@@ -95,8 +104,11 @@
 			isa = PBXGroup;
 			children = (
 				805E211F1FF768EB00A0F702 /* HomeScreenViewController.swift */,
+				808720551FFBCA040039BFD8 /* HomeScreen+Extensions.swift */,
 				805E213B1FF7A3AF00A0F702 /* ContactDetailsViewController.swift */,
+				808720571FFBCB230039BFD8 /* ContactDetails+Extensions.swift */,
 				805E21431FF8014000A0F702 /* EditContactViewController.swift */,
+				808720591FFBCBC50039BFD8 /* EditContact+Extensions.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -137,6 +149,14 @@
 				805E213F1FF7C96400A0F702 /* ContactDetailCollectionViewCell.swift */,
 			);
 			path = "Details Page";
+			sourceTree = "<group>";
+		};
+		808720541FFBC9270039BFD8 /* Network Layer */ = {
+			isa = PBXGroup;
+			children = (
+				808720521FFBC9200039BFD8 /* NetworkLayer.swift */,
+			);
+			path = "Network Layer";
 			sourceTree = "<group>";
 		};
 		80F973AC1FF89426000D4380 /* Edit Page */ = {
@@ -219,12 +239,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				808720531FFBC9200039BFD8 /* NetworkLayer.swift in Sources */,
 				805E21341FF76E2300A0F702 /* Model.swift in Sources */,
+				8087205A1FFBCBC50039BFD8 /* EditContact+Extensions.swift in Sources */,
 				805E21401FF7C96400A0F702 /* ContactDetailCollectionViewCell.swift in Sources */,
 				805E213C1FF7A3AF00A0F702 /* ContactDetailsViewController.swift in Sources */,
 				805E21361FF7760000A0F702 /* ContactHeaderView.swift in Sources */,
 				805E213E1FF7A97D00A0F702 /* ContactDetailTableViewCell.swift in Sources */,
 				805E21441FF8014000A0F702 /* EditContactViewController.swift in Sources */,
+				808720581FFBCB230039BFD8 /* ContactDetails+Extensions.swift in Sources */,
+				808720561FFBCA040039BFD8 /* HomeScreen+Extensions.swift in Sources */,
 				805E21321FF76DC900A0F702 /* ContactTableViewCell.swift in Sources */,
 				805E21201FF768EB00A0F702 /* HomeScreenViewController.swift in Sources */,
 				805E211E1FF768EB00A0F702 /* AppDelegate.swift in Sources */,
